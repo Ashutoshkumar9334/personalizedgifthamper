@@ -23,7 +23,7 @@ export const Route = createFileRoute("/_authenticated/account")({
 
 function Account() {
   const { user } = useAuth();
-  const isAdmin = useIsAdmin();
+  const { isAdmin } = useIsAdmin(user?.id);
   const navigate = useNavigate();
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");

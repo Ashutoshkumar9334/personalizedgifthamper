@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/select";
 import { inr } from "@/data/hampers";
 import { supabase } from "@/integrations/supabase/client";
-import { useIsAdmin } from "@/lib/useAuth";
+import { useAuth, useIsAdmin } from "@/lib/useAuth";
 
 export const Route = createFileRoute("/_authenticated/admin/dashboard")({
   head: () => ({
@@ -29,12 +29,13 @@ export const Route = createFileRoute("/_authenticated/admin/dashboard")({
 const statuses = ["placed", "packing", "dispatched", "delivered", "cancelled"] as const;
 
 function AdminDashboard() {
-  const isAdmin = useIsAdmin();
+  const { user } = useAuth();
+  const { isAdmin, checked } = useIsAdmin(user?.id);
   const queryClient = useQueryClient();
 
   const { data } = useQuery({
     queryKey: ["admin-orders"],
-    enabled: isAdmin === true,
+    enabled: isAdmin,
     queryFn: async () => {
       const { data, error } = await supabase
         .from("orders")
@@ -57,7 +58,7 @@ function AdminDashboard() {
     onError: () => toast.error("Couldn't update that order."),
   });
 
-  if (isAdmin === false) {
+  if (checked && !isAdmin) {
     return (
       <Section>
         <p className="text-center text-muted-foreground">
