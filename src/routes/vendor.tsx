@@ -189,7 +189,7 @@ function VendorPortal() {
                 Status: <span className="font-medium">{vendor.status}</span>
               </p>
               <Button asChild variant="gold">
-                <Link to="/vendor/dashboard">Open vendor dashboard</Link>
+                <Link to="/vendor-dashboard">Open vendor dashboard</Link>
               </Button>
             </div>
           ) : (

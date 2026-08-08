@@ -49,7 +49,7 @@ function AuthPage() {
   const [sent, setSent] = useState(false);
 
   useEffect(() => {
-    if (user) navigate({ to: safePath(redirect), replace: true });
+    if (user) navigate({ to: safePath(redirect ?? ""), replace: true });
   }, [user, redirect, navigate]);
 
   const submit = async (mode: "in" | "up", e: React.FormEvent<HTMLFormElement>) => {
