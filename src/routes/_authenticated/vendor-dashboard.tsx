@@ -48,7 +48,9 @@ function VendorDashboard() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("products")
-        .select("id, name, slug, category, price, compare_at, image_url, blurb, contents, stock, is_active")
+        .select(
+          "id, name, slug, category, price, compare_at, image_url, blurb, contents, stock, is_active",
+        )
         .eq("vendor_id", vendor!.id)
         .order("created_at", { ascending: false });
       if (error) throw error;
