@@ -26,6 +26,7 @@ import { Route as OrderSuccessRouteImport } from './routes/order-success'
 import { Route as SearchRouteImport } from './routes/search'
 import { Route as ShopRouteImport } from './routes/shop'
 import { Route as TrackRouteImport } from './routes/track'
+import { Route as VendorRouteImport } from './routes/vendor'
 import { Route as WishlistRouteImport } from './routes/wishlist'
 import { Route as AuthenticatedAccountRouteImport } from './routes/_authenticated/account'
 import { Route as AuthenticatedOrdersRouteImport } from './routes/_authenticated/orders'
@@ -117,6 +118,11 @@ const TrackRoute = TrackRouteImport.update({
   path: '/track',
   getParentRoute: () => rootRouteImport,
 } as any)
+const VendorRoute = VendorRouteImport.update({
+  id: '/vendor',
+  path: '/vendor',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const WishlistRoute = WishlistRouteImport.update({
   id: '/wishlist',
   path: '/wishlist',
@@ -166,6 +172,7 @@ export interface FileRoutesByFullPath {
   '/search': typeof SearchRoute
   '/shop': typeof ShopRoute
   '/track': typeof TrackRoute
+  '/vendor': typeof VendorRoute
   '/wishlist': typeof WishlistRoute
   '/account': typeof AuthenticatedAccountRoute
   '/orders': typeof AuthenticatedOrdersRoute
@@ -190,6 +197,7 @@ export interface FileRoutesByTo {
   '/search': typeof SearchRoute
   '/shop': typeof ShopRoute
   '/track': typeof TrackRoute
+  '/vendor': typeof VendorRoute
   '/wishlist': typeof WishlistRoute
   '/account': typeof AuthenticatedAccountRoute
   '/orders': typeof AuthenticatedOrdersRoute
@@ -216,6 +224,7 @@ export interface FileRoutesById {
   '/search': typeof SearchRoute
   '/shop': typeof ShopRoute
   '/track': typeof TrackRoute
+  '/vendor': typeof VendorRoute
   '/wishlist': typeof WishlistRoute
   '/_authenticated/account': typeof AuthenticatedAccountRoute
   '/_authenticated/orders': typeof AuthenticatedOrdersRoute
@@ -242,6 +251,7 @@ export interface FileRouteTypes {
     | '/search'
     | '/shop'
     | '/track'
+    | '/vendor'
     | '/wishlist'
     | '/account'
     | '/orders'
@@ -266,6 +276,7 @@ export interface FileRouteTypes {
     | '/search'
     | '/shop'
     | '/track'
+    | '/vendor'
     | '/wishlist'
     | '/account'
     | '/orders'
@@ -291,6 +302,7 @@ export interface FileRouteTypes {
     | '/search'
     | '/shop'
     | '/track'
+    | '/vendor'
     | '/wishlist'
     | '/_authenticated/account'
     | '/_authenticated/orders'
@@ -317,6 +329,7 @@ export interface RootRouteChildren {
   SearchRoute: typeof SearchRoute
   ShopRoute: typeof ShopRoute
   TrackRoute: typeof TrackRoute
+  VendorRoute: typeof VendorRoute
   WishlistRoute: typeof WishlistRoute
   CategorySlugRoute: typeof CategorySlugRoute
   ProductSlugRoute: typeof ProductSlugRoute
@@ -443,6 +456,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TrackRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/vendor': {
+      id: '/vendor'
+      path: '/vendor'
+      fullPath: '/vendor'
+      preLoaderRoute: typeof VendorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/wishlist': {
       id: '/wishlist'
       path: '/wishlist'
@@ -521,6 +541,7 @@ const rootRouteChildren: RootRouteChildren = {
   SearchRoute: SearchRoute,
   ShopRoute: ShopRoute,
   TrackRoute: TrackRoute,
+  VendorRoute: VendorRoute,
   WishlistRoute: WishlistRoute,
   CategorySlugRoute: CategorySlugRoute,
   ProductSlugRoute: ProductSlugRoute,
