@@ -77,6 +77,71 @@ export type Database = {
         }
         Relationships: []
       }
+      products: {
+        Row: {
+          blurb: string | null
+          category: string
+          compare_at: number | null
+          contents: string[]
+          created_at: string
+          created_by: string | null
+          id: string
+          image_url: string | null
+          is_active: boolean
+          name: string
+          price: number
+          slug: string
+          stock: number
+          tags: string[]
+          updated_at: string
+          vendor_id: string | null
+        }
+        Insert: {
+          blurb?: string | null
+          category?: string
+          compare_at?: number | null
+          contents?: string[]
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          name: string
+          price?: number
+          slug: string
+          stock?: number
+          tags?: string[]
+          updated_at?: string
+          vendor_id?: string | null
+        }
+        Update: {
+          blurb?: string | null
+          category?: string
+          compare_at?: number | null
+          contents?: string[]
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          name?: string
+          price?: number
+          slug?: string
+          stock?: number
+          tags?: string[]
+          updated_at?: string
+          vendor_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "products_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "vendors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           created_at: string
@@ -118,6 +183,45 @@ export type Database = {
           created_at?: string
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      vendors: {
+        Row: {
+          city: string | null
+          created_at: string
+          gst_no: string
+          id: string
+          phone: string | null
+          shop_name: string
+          shop_no: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          city?: string | null
+          created_at?: string
+          gst_no: string
+          id?: string
+          phone?: string | null
+          shop_name: string
+          shop_no: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          city?: string | null
+          created_at?: string
+          gst_no?: string
+          id?: string
+          phone?: string | null
+          shop_name?: string
+          shop_no?: string
+          status?: string
+          updated_at?: string
           user_id?: string
         }
         Relationships: []
