@@ -7,12 +7,13 @@ import { Section } from "@/components/site/Layout";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { getHamper, hampers, inr } from "@/data/hampers";
+import { getStoreProduct } from "@/lib/catalog.functions";
 import { useStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/product/$slug")({
-  loader: ({ params }) => {
-    const hamper = getHamper(params.slug);
+  loader: async ({ params }) => {
+    const hamper = getHamper(params.slug) ?? (await getStoreProduct({ data: { slug: params.slug } }));
     if (!hamper) throw notFound();
     return { hamper };
   },
@@ -86,7 +87,9 @@ function ProductPage() {
             alt={hamper.name}
             width={800}
             height={800}
-            className="w-full rounded-lg object-cover"
+            fetchPriority="high"
+            decoding="async"
+            className="aspect-square w-full rounded-lg object-cover"
           />
 
           <div>

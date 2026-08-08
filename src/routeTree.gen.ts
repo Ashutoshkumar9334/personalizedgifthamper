@@ -26,12 +26,15 @@ import { Route as OrderSuccessRouteImport } from './routes/order-success'
 import { Route as SearchRouteImport } from './routes/search'
 import { Route as ShopRouteImport } from './routes/shop'
 import { Route as TrackRouteImport } from './routes/track'
+import { Route as VendorRouteImport } from './routes/vendor'
 import { Route as WishlistRouteImport } from './routes/wishlist'
 import { Route as AuthenticatedAccountRouteImport } from './routes/_authenticated/account'
 import { Route as AuthenticatedOrdersRouteImport } from './routes/_authenticated/orders'
+import { Route as AuthenticatedVendorDashboardRouteImport } from './routes/_authenticated/vendor-dashboard'
 import { Route as CategorySlugRouteImport } from './routes/category.$slug'
 import { Route as ProductSlugRouteImport } from './routes/product.$slug'
 import { Route as AuthenticatedAdminDashboardRouteImport } from './routes/_authenticated/admin/dashboard'
+import { Route as AuthenticatedAdminProductsRouteImport } from './routes/_authenticated/admin/products'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -117,6 +120,11 @@ const TrackRoute = TrackRouteImport.update({
   path: '/track',
   getParentRoute: () => rootRouteImport,
 } as any)
+const VendorRoute = VendorRouteImport.update({
+  id: '/vendor',
+  path: '/vendor',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const WishlistRoute = WishlistRouteImport.update({
   id: '/wishlist',
   path: '/wishlist',
@@ -132,6 +140,12 @@ const AuthenticatedOrdersRoute = AuthenticatedOrdersRouteImport.update({
   path: '/orders',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedVendorDashboardRoute =
+  AuthenticatedVendorDashboardRouteImport.update({
+    id: '/vendor-dashboard',
+    path: '/vendor-dashboard',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const CategorySlugRoute = CategorySlugRouteImport.update({
   id: '/category/$slug',
   path: '/category/$slug',
@@ -146,6 +160,12 @@ const AuthenticatedAdminDashboardRoute =
   AuthenticatedAdminDashboardRouteImport.update({
     id: '/admin/dashboard',
     path: '/admin/dashboard',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAdminProductsRoute =
+  AuthenticatedAdminProductsRouteImport.update({
+    id: '/admin/products',
+    path: '/admin/products',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 
@@ -166,12 +186,15 @@ export interface FileRoutesByFullPath {
   '/search': typeof SearchRoute
   '/shop': typeof ShopRoute
   '/track': typeof TrackRoute
+  '/vendor': typeof VendorRoute
   '/wishlist': typeof WishlistRoute
   '/account': typeof AuthenticatedAccountRoute
   '/orders': typeof AuthenticatedOrdersRoute
+  '/vendor-dashboard': typeof AuthenticatedVendorDashboardRoute
   '/category/$slug': typeof CategorySlugRoute
   '/product/$slug': typeof ProductSlugRoute
   '/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
+  '/admin/products': typeof AuthenticatedAdminProductsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -190,12 +213,15 @@ export interface FileRoutesByTo {
   '/search': typeof SearchRoute
   '/shop': typeof ShopRoute
   '/track': typeof TrackRoute
+  '/vendor': typeof VendorRoute
   '/wishlist': typeof WishlistRoute
   '/account': typeof AuthenticatedAccountRoute
   '/orders': typeof AuthenticatedOrdersRoute
+  '/vendor-dashboard': typeof AuthenticatedVendorDashboardRoute
   '/category/$slug': typeof CategorySlugRoute
   '/product/$slug': typeof ProductSlugRoute
   '/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
+  '/admin/products': typeof AuthenticatedAdminProductsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -216,12 +242,15 @@ export interface FileRoutesById {
   '/search': typeof SearchRoute
   '/shop': typeof ShopRoute
   '/track': typeof TrackRoute
+  '/vendor': typeof VendorRoute
   '/wishlist': typeof WishlistRoute
   '/_authenticated/account': typeof AuthenticatedAccountRoute
   '/_authenticated/orders': typeof AuthenticatedOrdersRoute
+  '/_authenticated/vendor-dashboard': typeof AuthenticatedVendorDashboardRoute
   '/category/$slug': typeof CategorySlugRoute
   '/product/$slug': typeof ProductSlugRoute
   '/_authenticated/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
+  '/_authenticated/admin/products': typeof AuthenticatedAdminProductsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -242,12 +271,15 @@ export interface FileRouteTypes {
     | '/search'
     | '/shop'
     | '/track'
+    | '/vendor'
     | '/wishlist'
     | '/account'
     | '/orders'
+    | '/vendor-dashboard'
     | '/category/$slug'
     | '/product/$slug'
     | '/admin/dashboard'
+    | '/admin/products'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -266,12 +298,15 @@ export interface FileRouteTypes {
     | '/search'
     | '/shop'
     | '/track'
+    | '/vendor'
     | '/wishlist'
     | '/account'
     | '/orders'
+    | '/vendor-dashboard'
     | '/category/$slug'
     | '/product/$slug'
     | '/admin/dashboard'
+    | '/admin/products'
   id:
     | '__root__'
     | '/'
@@ -291,12 +326,15 @@ export interface FileRouteTypes {
     | '/search'
     | '/shop'
     | '/track'
+    | '/vendor'
     | '/wishlist'
     | '/_authenticated/account'
     | '/_authenticated/orders'
+    | '/_authenticated/vendor-dashboard'
     | '/category/$slug'
     | '/product/$slug'
     | '/_authenticated/admin/dashboard'
+    | '/_authenticated/admin/products'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -317,6 +355,7 @@ export interface RootRouteChildren {
   SearchRoute: typeof SearchRoute
   ShopRoute: typeof ShopRoute
   TrackRoute: typeof TrackRoute
+  VendorRoute: typeof VendorRoute
   WishlistRoute: typeof WishlistRoute
   CategorySlugRoute: typeof CategorySlugRoute
   ProductSlugRoute: typeof ProductSlugRoute
@@ -443,6 +482,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TrackRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/vendor': {
+      id: '/vendor'
+      path: '/vendor'
+      fullPath: '/vendor'
+      preLoaderRoute: typeof VendorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/wishlist': {
       id: '/wishlist'
       path: '/wishlist'
@@ -462,6 +508,13 @@ declare module '@tanstack/react-router' {
       path: '/orders'
       fullPath: '/orders'
       preLoaderRoute: typeof AuthenticatedOrdersRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/vendor-dashboard': {
+      id: '/_authenticated/vendor-dashboard'
+      path: '/vendor-dashboard'
+      fullPath: '/vendor-dashboard'
+      preLoaderRoute: typeof AuthenticatedVendorDashboardRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/category/$slug': {
@@ -485,19 +538,30 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminDashboardRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/admin/products': {
+      id: '/_authenticated/admin/products'
+      path: '/admin/products'
+      fullPath: '/admin/products'
+      preLoaderRoute: typeof AuthenticatedAdminProductsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAccountRoute: typeof AuthenticatedAccountRoute
   AuthenticatedOrdersRoute: typeof AuthenticatedOrdersRoute
+  AuthenticatedVendorDashboardRoute: typeof AuthenticatedVendorDashboardRoute
   AuthenticatedAdminDashboardRoute: typeof AuthenticatedAdminDashboardRoute
+  AuthenticatedAdminProductsRoute: typeof AuthenticatedAdminProductsRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAccountRoute: AuthenticatedAccountRoute,
   AuthenticatedOrdersRoute: AuthenticatedOrdersRoute,
+  AuthenticatedVendorDashboardRoute: AuthenticatedVendorDashboardRoute,
   AuthenticatedAdminDashboardRoute: AuthenticatedAdminDashboardRoute,
+  AuthenticatedAdminProductsRoute: AuthenticatedAdminProductsRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
@@ -521,6 +585,7 @@ const rootRouteChildren: RootRouteChildren = {
   SearchRoute: SearchRoute,
   ShopRoute: ShopRoute,
   TrackRoute: TrackRoute,
+  VendorRoute: VendorRoute,
   WishlistRoute: WishlistRoute,
   CategorySlugRoute: CategorySlugRoute,
   ProductSlugRoute: ProductSlugRoute,

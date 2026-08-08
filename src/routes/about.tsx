@@ -31,9 +31,10 @@ export const Route = createFileRoute("/about")({
             src={heroHamper}
             alt="A_S Hamper packing table with baskets and ribbons"
             loading="lazy"
+              decoding="async"
             width={1600}
             height={1200}
-            className="rounded-lg object-cover"
+            className="aspect-4/3 w-full rounded-lg object-cover"
           />
           <div className="space-y-5 text-muted-foreground">
             <p>

@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { HamperCard } from "@/components/site/HamperCard";
@@ -11,6 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { categories, hampers } from "@/data/hampers";
+import { listStoreProducts } from "@/lib/catalog.functions";
 
 export const Route = createFileRoute("/shop")({
   head: () => ({
@@ -34,16 +36,21 @@ export const Route = createFileRoute("/shop")({
 function Shop() {
   const [category, setCategory] = useState("all");
   const [sort, setSort] = useState("popular");
+  const { data: added } = useQuery({
+    queryKey: ["store-products"],
+    queryFn: () => listStoreProducts(),
+    staleTime: 60_000,
+  });
 
   const list = useMemo(() => {
-    const filtered =
-      category === "all" ? hampers : hampers.filter((h) => h.category === category);
+    const all = [...(added ?? []), ...hampers];
+    const filtered = category === "all" ? all : all.filter((h) => h.category === category);
     const sorted = [...filtered];
     if (sort === "low") sorted.sort((a, b) => a.price - b.price);
     if (sort === "high") sorted.sort((a, b) => b.price - a.price);
     if (sort === "popular") sorted.sort((a, b) => b.reviews - a.reviews);
     return sorted;
-  }, [category, sort]);
+  }, [category, sort, added]);
 
   return (
     <>

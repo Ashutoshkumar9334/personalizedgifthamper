@@ -22,6 +22,7 @@ export const Route = createFileRoute("/")({
           "Curated and custom-built gift hampers, hand-packed in small batches and delivered on the day that matters.",
       },
     ],
+    links: [{ rel: "preload", as: "image", href: heroHamper, fetchPriority: "high" }],
   }),
   component: Home,
 });
@@ -77,15 +78,18 @@ function Home() {
               ))}
             </dl>
           </div>
-          <div className="relative">
+          <div className="relative aspect-4/3 overflow-hidden rounded-lg shadow-luxe">
             <img
               src={heroHamper}
               alt="Luxury A_S Hamper gift basket with chocolates, candle and dried flowers"
               width={1600}
               height={1200}
-              className="w-full rounded-lg object-cover shadow-luxe"
+              fetchPriority="high"
+              decoding="async"
+              className="size-full object-cover"
             />
           </div>
+
         </div>
       </section>
 
