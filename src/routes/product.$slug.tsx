@@ -86,7 +86,9 @@ function ProductPage() {
             alt={hamper.name}
             width={800}
             height={800}
-            className="w-full rounded-lg object-cover"
+            fetchPriority="high"
+            decoding="async"
+            className="aspect-square w-full rounded-lg object-cover"
           />
 
           <div>

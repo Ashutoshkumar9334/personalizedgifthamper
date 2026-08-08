@@ -22,6 +22,7 @@ export const Route = createFileRoute("/")({
           "Curated and custom-built gift hampers, hand-packed in small batches and delivered on the day that matters.",
       },
     ],
+    links: [{ rel: "preload", as: "image", href: heroHamper, fetchPriority: "high" }],
   }),
   component: Home,
 });

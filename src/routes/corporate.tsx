@@ -52,9 +52,10 @@ function Corporate() {
               src={catCorporate}
               alt="Navy corporate gift hamper with branded ribbon"
               loading="lazy"
+              decoding="async"
               width={800}
               height={800}
-              className="rounded-lg object-cover"
+              className="aspect-square w-full rounded-lg object-cover"
             />
             <ul className="mt-8 space-y-3 text-sm text-muted-foreground">
               <li>· Custom-printed satin ribbon and belly bands with your logo</li>
