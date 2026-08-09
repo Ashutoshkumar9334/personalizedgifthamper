@@ -1,24 +1,28 @@
 import { Link } from "@tanstack/react-router";
-import { Heart, Menu, Search, ShoppingBag, Sparkles, User } from "lucide-react";
+import { Heart, Menu, Moon, Search, ShoppingBag, Sun, User } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { categories } from "@/data/hampers";
 import { useStore } from "@/lib/store";
+import { useTheme } from "@/lib/theme";
 import { useAuth } from "@/lib/useAuth";
 
 const primaryNav = [
+  { to: "/", label: "Home", exact: true },
   { to: "/shop", label: "All Hampers" },
   { to: "/customize", label: "Build Your Own" },
   { to: "/offers", label: "Offers" },
   { to: "/corporate", label: "Corporate" },
+  { to: "/vendor", label: "Vendor Zone" },
   { to: "/about", label: "About" },
-];
+] as const;
 
 export function Header() {
   const { count, wishlist } = useStore();
   const { user } = useAuth();
+  const { theme, toggle } = useTheme();
   const [open, setOpen] = useState(false);
 
   return (
@@ -61,18 +65,19 @@ export function Header() {
           </SheetContent>
         </Sheet>
 
-        <Link to="/" className="flex shrink-0 items-baseline gap-2">
+        <div className="flex shrink-0 items-baseline gap-2 select-none" aria-label="A_S Hamper">
           <span className="font-display text-2xl tracking-tight">A_S</span>
           <span className="eyebrow">Hamper</span>
-        </Link>
+        </div>
 
-        <nav className="ml-8 hidden items-center gap-7 text-sm lg:flex">
+        <nav className="ml-8 hidden items-center gap-6 text-sm lg:flex">
           {primaryNav.map((item) => (
             <Link
               key={item.to}
               to={item.to}
               className="text-muted-foreground transition-colors hover:text-foreground"
               activeProps={{ className: "text-foreground" }}
+              activeOptions={{ exact: "exact" in item && Boolean(item.exact) }}
             >
               {item.label}
             </Link>
@@ -81,7 +86,7 @@ export function Header() {
 
         <form
           action="/search"
-          className="ml-auto hidden w-64 items-center gap-2 md:flex"
+          className="ml-auto hidden w-56 items-center gap-2 xl:flex"
           role="search"
         >
           <div className="relative w-full">
@@ -95,7 +100,15 @@ export function Header() {
           </div>
         </form>
 
-        <div className="ml-auto flex items-center gap-1 md:ml-0">
+        <div className="ml-auto flex items-center gap-1 xl:ml-2">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={toggle}
+            aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+          >
+            {theme === "dark" ? <Sun /> : <Moon />}
+          </Button>
           <Button asChild variant="ghost" size="icon" aria-label="Wishlist">
             <Link to="/wishlist" className="relative">
               <Heart />
@@ -111,11 +124,6 @@ export function Header() {
             <Link to="/cart" className="relative">
               <ShoppingBag />
               {count > 0 && <Dot>{count}</Dot>}
-            </Link>
-          </Button>
-          <Button asChild variant="gold" className="ml-2 hidden md:inline-flex">
-            <Link to="/customize">
-              <Sparkles /> Build a hamper
             </Link>
           </Button>
         </div>

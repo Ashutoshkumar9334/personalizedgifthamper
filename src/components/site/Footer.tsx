@@ -19,7 +19,6 @@ const columns = [
       { to: "/contact", label: "Contact Us" },
       { to: "/corporate", label: "Corporate Gifting" },
       { to: "/faq", label: "FAQ" },
-      { to: "/vendor", label: "Sell With Us" },
     ],
   },
   {

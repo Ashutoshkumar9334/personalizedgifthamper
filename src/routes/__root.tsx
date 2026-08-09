@@ -14,6 +14,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { StoreProvider } from "@/lib/store";
+import { ThemeProvider } from "@/lib/theme";
 import { Toaster } from "@/components/ui/sonner";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -141,6 +142,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <ThemeProvider>
       <StoreProvider>
         <div className="flex min-h-screen flex-col">
           <Header />
@@ -152,6 +154,7 @@ function RootComponent() {
         </div>
         <Toaster />
       </StoreProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }
