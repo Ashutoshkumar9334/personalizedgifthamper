@@ -46,7 +46,7 @@ const shop = z.object({
     .trim()
     .toUpperCase()
     .regex(/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z][0-9A-Z]{2}$/, "Enter a valid 15-character GST number"),
-  phone: z.string().trim().max(15).optional(),
+  phone: z.string().trim().min(6, "Add a contact phone number").max(15),
   city: z.string().trim().max(80).optional(),
 });
 
@@ -85,7 +85,7 @@ function VendorPortal() {
         shop_name: parsed.data.shop_name,
         shop_no: parsed.data.shop_no,
         gst_no: parsed.data.gst_no,
-        phone: parsed.data.phone ?? null,
+        phone: parsed.data.phone,
         city: parsed.data.city ?? null,
       });
       if (error) throw error;
@@ -219,7 +219,7 @@ function VendorPortal() {
                 />
               </div>
               <div>
-                <Label htmlFor="v-phone">Phone</Label>
+                <Label htmlFor="v-phone">Phone number</Label>
                 <Input id="v-phone" name="phone" className="mt-2" maxLength={15} />
               </div>
               <div>

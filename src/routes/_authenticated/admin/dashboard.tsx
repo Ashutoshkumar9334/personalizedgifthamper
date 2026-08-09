@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { Fragment, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { PageHeader, Section } from "@/components/site/Layout";
 import { Badge } from "@/components/ui/badge";
@@ -187,8 +187,8 @@ function AdminDashboard() {
                 const isOpen = openId === o.id;
                 const items = itemsOf(o.items);
                 return (
-                  <>
-                    <tr key={o.id} className="border-b border-border last:border-0">
+                  <Fragment key={o.id}>
+                    <tr className="border-b border-border last:border-0">
                       <td className="p-4 font-mono text-xs">{o.order_number}</td>
                       <td className="p-4">
                         {o.recipient_name}
@@ -259,7 +259,7 @@ function AdminDashboard() {
                       </td>
                     </tr>
                     {isOpen && (
-                      <tr key={`${o.id}-detail`} className="border-b border-border bg-secondary/40">
+                      <tr className="border-b border-border bg-secondary/40">
                         <td colSpan={6} className="p-6">
                           <div className="grid gap-6 md:grid-cols-3">
                             <div>
@@ -308,7 +308,7 @@ function AdminDashboard() {
                         </td>
                       </tr>
                     )}
-                  </>
+                  </Fragment>
                 );
               })}
               {!isLoading && visible.length === 0 && (
