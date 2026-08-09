@@ -77,7 +77,7 @@ export function Header() {
               to={item.to}
               className="text-muted-foreground transition-colors hover:text-foreground"
               activeProps={{ className: "text-foreground" }}
-              activeOptions={"exact" in item && item.exact ? { exact: true } : undefined}
+              activeOptions={{ exact: "exact" in item && Boolean(item.exact) }}
             >
               {item.label}
             </Link>
