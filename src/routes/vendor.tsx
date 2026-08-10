@@ -68,7 +68,7 @@ const perks = [
 ];
 
 function VendorPortal() {
-  const { user, loading } = useAuth();
+  const { user } = useAuth();
   const queryClient = useQueryClient();
   const [mode, setMode] = useState<"up" | "in">("up");
   const [busy, setBusy] = useState(false);
