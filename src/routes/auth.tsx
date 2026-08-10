@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { ShieldCheck, UserRound } from "lucide-react";
+import { ArrowLeft, ArrowRight, Lock, Mail, Package, ShieldCheck, UserRound } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -7,7 +7,6 @@ import { PageHeader, Section } from "@/components/site/Layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { lovable } from "@/integrations/lovable/index";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth, useIsAdmin } from "@/lib/useAuth";
@@ -40,15 +39,38 @@ function safePath(value: string) {
   return value.startsWith("/") && !value.startsWith("//") ? value : "/";
 }
 
+type Portal = "user" | "admin";
+type Mode = "up" | "in";
+
+const benefits: Record<Portal, { title: string; items: [string, string][] }> = {
+  user: {
+    title: "User account benefits",
+    items: [
+      ["Track your orders", "See the current status of your hamper deliveries."],
+      ["Save your details", "Keep your account information ready for future purchases."],
+      ["Faster checkout", "Use your account to make shopping simpler."],
+      ["Exclusive offers", "Get access to new collections and special deals."],
+    ],
+  },
+  admin: {
+    title: "Admin product controls",
+    items: [
+      ["Add products", "Create hampers with categories, images, prices and stock."],
+      ["Edit inventory", "Update product details and availability whenever needed."],
+      ["Remove products", "Remove items that are no longer available."],
+      ["Manage orders", "Review orders and update their delivery status."],
+    ],
+  },
+};
+
 function AuthPage() {
   const { redirect } = Route.useSearch();
   const { user } = useAuth();
   const { isAdmin, checked } = useIsAdmin(user?.id);
   const navigate = useNavigate();
+  const [portal, setPortal] = useState<Portal>("user");
+  const [mode, setMode] = useState<Mode>("in");
   const [busy, setBusy] = useState(false);
-  const [sent, setSent] = useState(false);
-  const [adminBusy, setAdminBusy] = useState(false);
-  const [adminSent, setAdminSent] = useState(false);
 
   useEffect(() => {
     if (!user) return;
@@ -60,11 +82,7 @@ function AuthPage() {
     navigate({ to: isAdmin ? "/admin/dashboard" : "/account", replace: true });
   }, [user, redirect, checked, isAdmin, navigate]);
 
-  const run = async (
-    mode: "in" | "up",
-    e: React.FormEvent<HTMLFormElement>,
-    kind: "user" | "admin",
-  ) => {
+  const run = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = new FormData(e.currentTarget);
     const parsed = creds.safeParse({ email: form.get("email"), password: form.get("password") });
@@ -72,30 +90,27 @@ function AuthPage() {
       toast.error(parsed.error.issues[0]!.message);
       return;
     }
-    const setLoading = kind === "admin" ? setAdminBusy : setBusy;
-    setLoading(true);
+    setBusy(true);
     if (mode === "in") {
       const { error } = await supabase.auth.signInWithPassword(parsed.data);
-      setLoading(false);
+      setBusy(false);
       if (error) toast.error("Those details didn't match. Please try again.");
       return;
     }
-    const { data, error } = await supabase.auth.signUp({
+    const fullName = String(form.get("full_name") ?? "").trim().slice(0, 120);
+    const { error } = await supabase.auth.signUp({
       ...parsed.data,
       options: {
-        emailRedirectTo:
-          kind === "admin" ? `${window.location.origin}/admin/dashboard` : window.location.origin,
+        emailRedirectTo: window.location.origin,
+        data: fullName ? { full_name: fullName } : {},
       },
     });
-    setLoading(false);
+    setBusy(false);
     if (error) {
       toast.error(error.message);
       return;
     }
-    if (!data.session) {
-      if (kind === "admin") setAdminSent(true);
-      else setSent(true);
-    }
+    toast.success("Account created. You're signed in.");
   };
 
   const google = async () => {
@@ -105,131 +120,176 @@ function AuthPage() {
     if (result.error) toast.error("Google sign-in didn't complete.");
   };
 
+  const isAdminPortal = portal === "admin";
+  const copy = benefits[portal];
+
   return (
     <>
       <PageHeader
-        eyebrow="Your account"
-        title="Sign in to A_S Hamper"
-        description="Customers sign in on the left. Staff can reach the admin orders dashboard on the right."
+        eyebrow="Account portal"
+        title="Sign in to continue"
+        description="Sign in or create a customer account, or use the separate admin login."
       />
       <Section>
+        <Link
+          to="/"
+          className="mb-8 inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+        >
+          <ArrowLeft className="size-4" /> Back to home
+        </Link>
+
+        <div className="mb-8 inline-flex rounded-full bg-secondary p-1">
+          {(["user", "admin"] as const).map((p) => (
+            <button
+              key={p}
+              type="button"
+              onClick={() => setPortal(p)}
+              className={`inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm transition-colors ${
+                portal === p
+                  ? "bg-primary text-primary-foreground"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              {p === "user" ? (
+                <UserRound className="size-4" />
+              ) : (
+                <ShieldCheck className="size-4" />
+              )}
+              {p === "user" ? "Customer account" : "Admin access"}
+            </button>
+          ))}
+        </div>
+
         <div className="grid gap-8 lg:grid-cols-2">
-          <div className="rounded-lg border border-border bg-card p-8">
-            <div className="flex items-center gap-3">
-              <UserRound className="size-5 text-primary" />
-              <h2 className="font-display text-2xl">Customer account</h2>
+          <div className="rounded-xl border border-border bg-card p-8">
+            <div className="flex items-center gap-4">
+              <span className="flex size-12 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                {isAdminPortal ? (
+                  <ShieldCheck className="size-5" />
+                ) : (
+                  <UserRound className="size-5" />
+                )}
+              </span>
+              <div>
+                <h2 className="font-display text-2xl">
+                  {isAdminPortal ? "Admin account" : "Customer account"}
+                </h2>
+                <p className="text-sm text-muted-foreground">
+                  {isAdminPortal
+                    ? "Secure access for your store administrators"
+                    : mode === "in"
+                      ? "Welcome back, customer"
+                      : "Create an account to track orders"}
+                </p>
+              </div>
             </div>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Track orders, save a wishlist and reorder favourites.
-            </p>
-            {sent ? (
-              <p className="mt-6 text-sm text-muted-foreground">
-                Check your email to confirm your account, then come back and sign in.
-              </p>
-            ) : (
-              <>
-                <Button variant="outline" className="mt-6 w-full" onClick={google}>
-                  Continue with Google
-                </Button>
-                <div className="my-5 text-center text-xs tracking-widest uppercase text-muted-foreground">
-                  or
+
+            <div className="mt-6 grid grid-cols-2 gap-1 rounded-full bg-secondary p-1">
+              {(["up", "in"] as const).map((m) => (
+                <button
+                  key={m}
+                  type="button"
+                  onClick={() => setMode(m)}
+                  className={`rounded-full px-4 py-2.5 text-sm transition-colors ${
+                    mode === m
+                      ? "bg-primary text-primary-foreground"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  {m === "up" ? "Sign Up" : "Log In"}
+                </button>
+              ))}
+            </div>
+
+            <form className="mt-6 space-y-5" onSubmit={run}>
+              {mode === "up" && (
+                <div>
+                  <Label htmlFor="full_name" className="eyebrow flex items-center gap-2">
+                    <UserRound className="size-4" /> Name
+                  </Label>
+                  <Input
+                    id="full_name"
+                    name="full_name"
+                    className="mt-2"
+                    placeholder="Your name"
+                    maxLength={120}
+                  />
                 </div>
-                <Tabs defaultValue="in">
-                  <TabsList className="grid w-full grid-cols-2">
-                    <TabsTrigger value="in">Sign in</TabsTrigger>
-                    <TabsTrigger value="up">Create account</TabsTrigger>
-                  </TabsList>
-                  {(["in", "up"] as const).map((mode) => (
-                    <TabsContent key={mode} value={mode}>
-                      <form className="space-y-4 pt-4" onSubmit={(e) => run(mode, e, "user")}>
-                        <div>
-                          <Label htmlFor={`${mode}-email`}>Email</Label>
-                          <Input
-                            id={`${mode}-email`}
-                            name="email"
-                            type="email"
-                            className="mt-2"
-                            maxLength={255}
-                          />
-                        </div>
-                        <div>
-                          <Label htmlFor={`${mode}-password`}>Password</Label>
-                          <Input
-                            id={`${mode}-password`}
-                            name="password"
-                            type="password"
-                            className="mt-2"
-                            maxLength={72}
-                          />
-                        </div>
-                        <Button type="submit" variant="gold" className="w-full" disabled={busy}>
-                          {mode === "in" ? "Sign in" : "Create account"}
-                        </Button>
-                      </form>
-                    </TabsContent>
-                  ))}
-                </Tabs>
+              )}
+              <div>
+                <Label htmlFor="auth-email" className="eyebrow flex items-center gap-2">
+                  <Mail className="size-4" /> Email
+                </Label>
+                <Input
+                  id="auth-email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  className="mt-2"
+                  maxLength={255}
+                />
+              </div>
+              <div>
+                <Label htmlFor="auth-password" className="eyebrow flex items-center gap-2">
+                  <Lock className="size-4" /> Password
+                </Label>
+                <Input
+                  id="auth-password"
+                  name="password"
+                  type="password"
+                  autoComplete={mode === "in" ? "current-password" : "new-password"}
+                  className="mt-2"
+                  maxLength={72}
+                />
+              </div>
+              <Button type="submit" className="w-full" size="lg" disabled={busy}>
+                {mode === "in"
+                  ? "Sign in"
+                  : isAdminPortal
+                    ? "Create admin account"
+                    : "Create account"}
+                <ArrowRight />
+              </Button>
+            </form>
+
+            {!isAdminPortal && (
+              <>
+                <div className="my-6 flex items-center gap-4 text-xs tracking-widest text-muted-foreground uppercase">
+                  <span className="h-px flex-1 bg-border" />
+                  Or continue with
+                  <span className="h-px flex-1 bg-border" />
+                </div>
+                <Button variant="outline" className="w-full" size="lg" onClick={google}>
+                  Google
+                </Button>
               </>
+            )}
+
+            {isAdminPortal && (
+              <p className="mt-6 text-xs text-muted-foreground">
+                New admin accounts need staff access granted before the dashboard unlocks.
+              </p>
             )}
           </div>
 
-          <div className="rounded-lg border border-border bg-secondary/40 p-8">
-            <div className="flex items-center gap-3">
-              <ShieldCheck className="size-5 text-primary" />
-              <h2 className="font-display text-2xl">Admin orders dashboard</h2>
-            </div>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Staff sign-in for order management, returns and cancellations. New admin accounts need
-              staff access granted before the dashboard unlocks.
-            </p>
-            {adminSent ? (
-              <p className="mt-6 text-sm text-muted-foreground">
-                Confirm your email, then sign in here to reach the dashboard.
-              </p>
-            ) : (
-              <Tabs defaultValue="in" className="mt-6">
-                <TabsList className="grid w-full grid-cols-2">
-                  <TabsTrigger value="in">Admin sign in</TabsTrigger>
-                  <TabsTrigger value="up">Create admin account</TabsTrigger>
-                </TabsList>
-                {(["in", "up"] as const).map((mode) => (
-                  <TabsContent key={mode} value={mode}>
-                    <form className="space-y-4 pt-4" onSubmit={(e) => run(mode, e, "admin")}>
-                      <div>
-                        <Label htmlFor={`a-${mode}-email`}>Work email</Label>
-                        <Input
-                          id={`a-${mode}-email`}
-                          name="email"
-                          type="email"
-                          className="mt-2"
-                          maxLength={255}
-                        />
-                      </div>
-                      <div>
-                        <Label htmlFor={`a-${mode}-password`}>Password</Label>
-                        <Input
-                          id={`a-${mode}-password`}
-                          name="password"
-                          type="password"
-                          className="mt-2"
-                          maxLength={72}
-                        />
-                      </div>
-                      <Button type="submit" className="w-full" disabled={adminBusy}>
-                        {mode === "in" ? "Sign in to dashboard" : "Create admin account"}
-                      </Button>
-                    </form>
-                  </TabsContent>
-                ))}
-              </Tabs>
-            )}
-            <p className="mt-6 text-xs text-muted-foreground">
-              Selling with us instead?{" "}
-              <Link to="/vendor" className="underline">
-                Go to the vendor zone
-              </Link>
-              .
-            </p>
+          <div className="rounded-xl border border-border bg-card/60 p-8">
+            <span className="flex size-12 items-center justify-center rounded-full bg-secondary text-primary">
+              {isAdminPortal ? <Package className="size-5" /> : <UserRound className="size-5" />}
+            </span>
+            <h2 className="mt-6 font-display text-2xl">{copy.title}</h2>
+            <ol className="mt-6 space-y-5">
+              {copy.items.map(([title, description], i) => (
+                <li key={title} className="flex gap-4">
+                  <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">
+                    {i + 1}
+                  </span>
+                  <div>
+                    <p className="font-display text-lg">{title}</p>
+                    <p className="text-sm text-muted-foreground">{description}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
           </div>
         </div>
       </Section>
