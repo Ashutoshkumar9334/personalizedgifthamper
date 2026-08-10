@@ -120,7 +120,6 @@ function Account() {
               <p className="mt-1 text-sm text-muted-foreground">{user?.email}</p>
               <div className="mt-4 flex flex-wrap justify-center gap-2">
                 {isAdmin && <Badge variant="gold">Staff</Badge>}
-                {vendor && <Badge variant="secondary">Vendor · {vendor.status}</Badge>}
                 {profile?.created_at && (
                   <Badge variant="secondary">
                     Since {new Date(profile.created_at).getFullYear()}
@@ -136,11 +135,7 @@ function Account() {
                 icon={Heart}
                 label={`Wishlist${wishlist.length ? ` (${wishlist.length})` : ""}`}
               />
-              <AccountLink
-                to={vendor ? "/vendor-dashboard" : "/vendor"}
-                icon={Store}
-                label={vendor ? "Vendor dashboard" : "Become a vendor"}
-              />
+
               {isAdmin && (
                 <>
                   <AccountLink to="/admin/dashboard" icon={ShieldCheck} label="Admin orders" />
