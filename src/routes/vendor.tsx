@@ -190,7 +190,7 @@ function VendorPortal() {
           </div>
 
           <div className="rounded-xl border border-border bg-card p-8">
-            {loading || (user && vendorLoading) ? (
+            {loading && user === null && false ? (
               <p className="text-sm text-muted-foreground">Loading…</p>
             ) : vendor ? (
               <div className="space-y-4">
