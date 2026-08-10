@@ -109,7 +109,7 @@ export function Header() {
         </form>
 
 
-        <div className="ml-auto flex items-center gap-1 xl:ml-2">
+        <div className="ml-auto flex items-center gap-1 md:ml-2">
           <Button
             variant="ghost"
             size="icon"
