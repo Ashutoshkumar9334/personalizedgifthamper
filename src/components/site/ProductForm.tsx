@@ -247,6 +247,18 @@ export function ProductForm({
         />
       </div>
 
+      <label className="flex items-center gap-3 rounded-md border border-border p-4 sm:col-span-2">
+        <Checkbox
+          checked={(draft.tags ?? []).includes("offer")}
+          onCheckedChange={(checked) => {
+            const rest = (draft.tags ?? []).filter((t) => t !== "offer");
+            set("tags", checked ? [...rest, "offer"] : rest);
+          }}
+        />
+        <span className="text-sm">Show this product in Offers &amp; deals</span>
+      </label>
+
+
       <div className="flex gap-3 sm:col-span-2">
         <Button type="submit" variant="gold" disabled={saving}>
           {draft.id ? "Save product" : "Add product"}
