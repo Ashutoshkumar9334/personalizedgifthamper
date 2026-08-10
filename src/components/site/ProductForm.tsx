@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Select,
   SelectContent,
@@ -26,6 +27,7 @@ export interface ProductDraft {
   contents: string[];
   stock: number;
   is_active: boolean;
+  tags?: string[];
 }
 
 export const emptyProduct: ProductDraft = {
@@ -39,7 +41,9 @@ export const emptyProduct: ProductDraft = {
   contents: [],
   stock: 0,
   is_active: true,
+  tags: [],
 };
+
 
 const schema = z.object({
   name: z.string().trim().min(2, "Add a product name").max(120),
@@ -243,6 +247,18 @@ export function ProductForm({
           onChange={(e) => setContentsText(e.target.value)}
         />
       </div>
+
+      <label className="flex items-center gap-3 rounded-md border border-border p-4 sm:col-span-2">
+        <Checkbox
+          checked={(draft.tags ?? []).includes("offer")}
+          onCheckedChange={(checked) => {
+            const rest = (draft.tags ?? []).filter((t) => t !== "offer");
+            set("tags", checked ? [...rest, "offer"] : rest);
+          }}
+        />
+        <span className="text-sm">Show this product in Offers &amp; deals</span>
+      </label>
+
 
       <div className="flex gap-3 sm:col-span-2">
         <Button type="submit" variant="gold" disabled={saving}>
