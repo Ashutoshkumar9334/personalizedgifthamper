@@ -26,6 +26,7 @@ export interface ProductDraft {
   contents: string[];
   stock: number;
   is_active: boolean;
+  tags?: string[];
 }
 
 export const emptyProduct: ProductDraft = {
@@ -39,7 +40,9 @@ export const emptyProduct: ProductDraft = {
   contents: [],
   stock: 0,
   is_active: true,
+  tags: [],
 };
+
 
 const schema = z.object({
   name: z.string().trim().min(2, "Add a product name").max(120),
