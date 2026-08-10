@@ -38,13 +38,21 @@ export function Header() {
             </Button>
           </SheetTrigger>
           <SheetContent side="left" className="w-80 overflow-y-auto">
-            <nav className="mt-10 flex flex-col gap-1">
+            <form action="/search" role="search" className="mt-10">
+              <div className="relative">
+                <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
+                <Input name="q" placeholder="Search hampers…" className="pl-9" aria-label="Search hampers" />
+              </div>
+            </form>
+            <nav className="mt-6 flex flex-col gap-1">
               {primaryNav.map((item) => (
                 <Link
                   key={item.to}
                   to={item.to}
                   onClick={() => setOpen(false)}
-                  className="rounded-sm px-3 py-2 text-base hover:bg-secondary"
+                  className="rounded-full px-3 py-2 text-base hover:bg-secondary"
+                  activeProps={{ className: "bg-primary text-primary-foreground" }}
+                  activeOptions={{ exact: "exact" in item && Boolean(item.exact) }}
                 >
                   {item.label}
                 </Link>
@@ -70,13 +78,13 @@ export function Header() {
           <span className="eyebrow">Hamper</span>
         </div>
 
-        <nav className="ml-8 hidden items-center gap-6 text-sm lg:flex">
+        <nav className="ml-6 hidden items-center gap-1 text-sm lg:flex">
           {primaryNav.map((item) => (
             <Link
               key={item.to}
               to={item.to}
-              className="text-muted-foreground transition-colors hover:text-foreground"
-              activeProps={{ className: "text-foreground" }}
+              className="rounded-full px-3 py-2 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+              activeProps={{ className: "bg-primary text-primary-foreground hover:bg-primary" }}
               activeOptions={{ exact: "exact" in item && Boolean(item.exact) }}
             >
               {item.label}
@@ -86,7 +94,7 @@ export function Header() {
 
         <form
           action="/search"
-          className="ml-auto hidden w-56 items-center gap-2 xl:flex"
+          className="ml-auto hidden w-44 items-center gap-2 md:flex xl:w-56"
           role="search"
         >
           <div className="relative w-full">
@@ -99,6 +107,7 @@ export function Header() {
             />
           </div>
         </form>
+
 
         <div className="ml-auto flex items-center gap-1 xl:ml-2">
           <Button
