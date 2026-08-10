@@ -73,19 +73,8 @@ function Account() {
     },
   });
 
-  const { data: vendor } = useQuery({
-    queryKey: ["vendor", user?.id],
-    enabled: Boolean(user),
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("vendors")
-        .select("id, shop_name, status")
-        .eq("user_id", user!.id)
-        .maybeSingle();
-      if (error) throw error;
-      return data;
-    },
-  });
+
+
 
   useEffect(() => {
     setFullName(profile?.full_name ?? "");
