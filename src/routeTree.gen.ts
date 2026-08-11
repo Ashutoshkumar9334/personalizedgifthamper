@@ -41,6 +41,7 @@ import { Route as AuthenticatedCustomerIndexRouteImport } from './routes/_authen
 import { Route as AuthenticatedCustomerAddressesRouteImport } from './routes/_authenticated/customer/addresses'
 import { Route as AuthenticatedCustomerOrdersRouteImport } from './routes/_authenticated/customer/orders'
 import { Route as AuthenticatedCustomerProfileRouteImport } from './routes/_authenticated/customer/profile'
+import { Route as AuthenticatedCustomerWishlistRouteImport } from './routes/_authenticated/customer/wishlist'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -209,6 +210,12 @@ const AuthenticatedCustomerProfileRoute =
     path: '/profile',
     getParentRoute: () => AuthenticatedCustomerRouteRoute,
   } as any)
+const AuthenticatedCustomerWishlistRoute =
+  AuthenticatedCustomerWishlistRouteImport.update({
+    id: '/wishlist',
+    path: '/wishlist',
+    getParentRoute: () => AuthenticatedCustomerRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -241,6 +248,7 @@ export interface FileRoutesByFullPath {
   '/customer/addresses': typeof AuthenticatedCustomerAddressesRoute
   '/customer/orders': typeof AuthenticatedCustomerOrdersRoute
   '/customer/profile': typeof AuthenticatedCustomerProfileRoute
+  '/customer/wishlist': typeof AuthenticatedCustomerWishlistRoute
   '/customer/': typeof AuthenticatedCustomerIndexRoute
 }
 export interface FileRoutesByTo {
@@ -273,6 +281,7 @@ export interface FileRoutesByTo {
   '/customer/addresses': typeof AuthenticatedCustomerAddressesRoute
   '/customer/orders': typeof AuthenticatedCustomerOrdersRoute
   '/customer/profile': typeof AuthenticatedCustomerProfileRoute
+  '/customer/wishlist': typeof AuthenticatedCustomerWishlistRoute
   '/customer': typeof AuthenticatedCustomerIndexRoute
 }
 export interface FileRoutesById {
@@ -308,6 +317,7 @@ export interface FileRoutesById {
   '/_authenticated/customer/addresses': typeof AuthenticatedCustomerAddressesRoute
   '/_authenticated/customer/orders': typeof AuthenticatedCustomerOrdersRoute
   '/_authenticated/customer/profile': typeof AuthenticatedCustomerProfileRoute
+  '/_authenticated/customer/wishlist': typeof AuthenticatedCustomerWishlistRoute
   '/_authenticated/customer/': typeof AuthenticatedCustomerIndexRoute
 }
 export interface FileRouteTypes {
@@ -343,6 +353,7 @@ export interface FileRouteTypes {
     | '/customer/addresses'
     | '/customer/orders'
     | '/customer/profile'
+    | '/customer/wishlist'
     | '/customer/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -375,6 +386,7 @@ export interface FileRouteTypes {
     | '/customer/addresses'
     | '/customer/orders'
     | '/customer/profile'
+    | '/customer/wishlist'
     | '/customer'
   id:
     | '__root__'
@@ -409,6 +421,7 @@ export interface FileRouteTypes {
     | '/_authenticated/customer/addresses'
     | '/_authenticated/customer/orders'
     | '/_authenticated/customer/profile'
+    | '/_authenticated/customer/wishlist'
     | '/_authenticated/customer/'
   fileRoutesById: FileRoutesById
 }
@@ -663,6 +676,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCustomerProfileRouteImport
       parentRoute: typeof AuthenticatedCustomerRouteRoute
     }
+    '/_authenticated/customer/wishlist': {
+      id: '/_authenticated/customer/wishlist'
+      path: '/wishlist'
+      fullPath: '/customer/wishlist'
+      preLoaderRoute: typeof AuthenticatedCustomerWishlistRouteImport
+      parentRoute: typeof AuthenticatedCustomerRouteRoute
+    }
   }
 }
 
@@ -670,6 +690,7 @@ interface AuthenticatedCustomerRouteRouteChildren {
   AuthenticatedCustomerAddressesRoute: typeof AuthenticatedCustomerAddressesRoute
   AuthenticatedCustomerOrdersRoute: typeof AuthenticatedCustomerOrdersRoute
   AuthenticatedCustomerProfileRoute: typeof AuthenticatedCustomerProfileRoute
+  AuthenticatedCustomerWishlistRoute: typeof AuthenticatedCustomerWishlistRoute
   AuthenticatedCustomerIndexRoute: typeof AuthenticatedCustomerIndexRoute
 }
 
@@ -678,6 +699,7 @@ const AuthenticatedCustomerRouteRouteChildren: AuthenticatedCustomerRouteRouteCh
     AuthenticatedCustomerAddressesRoute: AuthenticatedCustomerAddressesRoute,
     AuthenticatedCustomerOrdersRoute: AuthenticatedCustomerOrdersRoute,
     AuthenticatedCustomerProfileRoute: AuthenticatedCustomerProfileRoute,
+    AuthenticatedCustomerWishlistRoute: AuthenticatedCustomerWishlistRoute,
     AuthenticatedCustomerIndexRoute: AuthenticatedCustomerIndexRoute,
   }
 
