@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { ArrowLeft, ArrowRight, Lock, Mail, Package, ShieldCheck, UserRound } from "lucide-react";
+import { ArrowLeft, ArrowRight, Lock, Mail, ShieldCheck, UserRound } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { lovable } from "@/integrations/lovable/index";
 import { supabase } from "@/integrations/supabase/client";
+import { checkAdminEmail } from "@/lib/admin.functions";
 import { useAuth, useIsAdmin } from "@/lib/useAuth";
 
 export const Route = createFileRoute("/auth")({
@@ -46,19 +47,19 @@ const benefits: Record<Portal, { title: string; items: [string, string][] }> = {
   user: {
     title: "User account benefits",
     items: [
-      ["Track your orders", "See the current status of your hamper deliveries."],
-      ["Save your details", "Keep your account information ready for future purchases."],
-      ["Faster checkout", "Use your account to make shopping simpler."],
-      ["Exclusive offers", "Get access to new collections and special deals."],
+      ["Track your orders", "See the current status of every hamper delivery."],
+      ["Saved addresses", "Keep delivery details ready for a one-tap checkout."],
+      ["Wishlist that follows you", "Saved hampers sync across your devices."],
+      ["Exclusive offers", "Be first to see new collections and special deals."],
     ],
   },
   admin: {
     title: "Admin product controls",
     items: [
       ["Add products", "Create hampers with categories, images, prices and stock."],
-      ["Edit inventory", "Update product details and availability whenever needed."],
-      ["Remove products", "Remove items that are no longer available."],
-      ["Manage orders", "Review orders and update their delivery status."],
+      ["Edit inventory", "Update product details, offers and availability."],
+      ["Manage orders", "Move orders through fulfilment, returns and refunds."],
+      ["Know your customers", "Review accounts and send them notifications."],
     ],
   },
 };
@@ -79,8 +80,11 @@ function AuthPage() {
       return;
     }
     if (!checked) return;
-    navigate({ to: isAdmin ? "/admin/dashboard" : "/account", replace: true });
+    navigate({ to: isAdmin ? "/admin" : "/customer", replace: true });
   }, [user, redirect, checked, isAdmin, navigate]);
+
+  const isAdminPortal = portal === "admin";
+  const copy = benefits[portal];
 
   const run = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -91,37 +95,69 @@ function AuthPage() {
       return;
     }
     setBusy(true);
-    if (mode === "in") {
-      const { error } = await supabase.auth.signInWithPassword(parsed.data);
+    try {
+      const { isAdminEmail } = await checkAdminEmail({ data: { email: parsed.data.email } });
+
+      if (isAdminPortal && !isAdminEmail) {
+        toast.error("This email doesn't have admin access. Use the customer account tab.");
+        return;
+      }
+      if (!isAdminPortal && isAdminEmail) {
+        toast.error("This email is reserved for the store admin. Use the Admin access tab.");
+        return;
+      }
+
+      if (mode === "in") {
+        const { error } = await supabase.auth.signInWithPassword(parsed.data);
+        if (error) toast.error("Those details didn't match. Please try again.");
+        return;
+      }
+
+      const fullName = String(form.get("full_name") ?? "")
+        .trim()
+        .slice(0, 120);
+      const { error } = await supabase.auth.signUp({
+        ...parsed.data,
+        options: {
+          emailRedirectTo: window.location.origin,
+          data: fullName ? { full_name: fullName } : {},
+        },
+      });
+      if (error) {
+        toast.error(error.message);
+        return;
+      }
+      toast.success("Account created. You're signed in.");
+    } finally {
       setBusy(false);
-      if (error) toast.error("Those details didn't match. Please try again.");
-      return;
     }
-    const fullName = String(form.get("full_name") ?? "").trim().slice(0, 120);
-    const { error } = await supabase.auth.signUp({
-      ...parsed.data,
-      options: {
-        emailRedirectTo: window.location.origin,
-        data: fullName ? { full_name: fullName } : {},
-      },
-    });
-    setBusy(false);
-    if (error) {
-      toast.error(error.message);
-      return;
-    }
-    toast.success("Account created. You're signed in.");
   };
 
   const google = async () => {
     const result = await lovable.auth.signInWithOAuth("google", {
       redirect_uri: window.location.origin,
+      extraParams: { prompt: "select_account" },
     });
     if (result.error) toast.error("Google sign-in didn't complete.");
   };
 
-  const isAdminPortal = portal === "admin";
-  const copy = benefits[portal];
+  const forgotPassword = async () => {
+    const email = window.prompt("Enter the email on your account");
+    if (!email) return;
+    const parsed = z.string().trim().email().max(255).safeParse(email);
+    if (!parsed.success) {
+      toast.error("Enter a valid email address.");
+      return;
+    }
+    const { error } = await supabase.auth.resetPasswordForEmail(parsed.data, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    if (error) {
+      toast.error("Couldn't send that reset link. Try again shortly.");
+      return;
+    }
+    toast.success("Password reset link sent. Check your inbox.");
+  };
 
   return (
     <>
@@ -176,7 +212,7 @@ function AuthPage() {
                 </h2>
                 <p className="text-sm text-muted-foreground">
                   {isAdminPortal
-                    ? "Secure access for your store administrators"
+                    ? "Secure access for the store administrator"
                     : mode === "in"
                       ? "Welcome back, customer"
                       : "Create an account to track orders"}
@@ -244,12 +280,19 @@ function AuthPage() {
               </div>
               <Button type="submit" className="w-full" size="lg" disabled={busy}>
                 {mode === "in"
-                  ? "Sign in"
+                  ? "Log in"
                   : isAdminPortal
                     ? "Create admin account"
                     : "Create account"}
                 <ArrowRight />
               </Button>
+              <button
+                type="button"
+                onClick={forgotPassword}
+                className="text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
+              >
+                Forgot your password?
+              </button>
             </form>
 
             {!isAdminPortal && (
@@ -262,19 +305,22 @@ function AuthPage() {
                 <Button variant="outline" className="w-full" size="lg" onClick={google}>
                   Google
                 </Button>
+                <p className="mt-3 text-xs text-muted-foreground">
+                  You can use any of your Google accounts — each one gets its own customer account.
+                </p>
               </>
             )}
 
             {isAdminPortal && (
               <p className="mt-6 text-xs text-muted-foreground">
-                New admin accounts need staff access granted before the dashboard unlocks.
+                Admin access is limited to the store's registered admin email address.
               </p>
             )}
           </div>
 
           <div className="rounded-xl border border-border bg-card/60 p-8">
             <span className="flex size-12 items-center justify-center rounded-full bg-secondary text-primary">
-              {isAdminPortal ? <Package className="size-5" /> : <UserRound className="size-5" />}
+              {isAdminPortal ? <ShieldCheck className="size-5" /> : <UserRound className="size-5" />}
             </span>
             <h2 className="mt-6 font-display text-2xl">{copy.title}</h2>
             <ol className="mt-6 space-y-5">
