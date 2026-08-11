@@ -30,6 +30,7 @@ import { Route as TrackRouteImport } from './routes/track'
 import { Route as VendorRouteImport } from './routes/vendor'
 import { Route as WishlistRouteImport } from './routes/wishlist'
 import { Route as AuthenticatedAccountRouteImport } from './routes/_authenticated/account'
+import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authenticated/admin/route'
 import { Route as AuthenticatedCustomerRouteRouteImport } from './routes/_authenticated/customer/route'
 import { Route as AuthenticatedOrdersRouteImport } from './routes/_authenticated/orders'
 import { Route as AuthenticatedVendorDashboardRouteImport } from './routes/_authenticated/vendor-dashboard'
@@ -149,6 +150,11 @@ const AuthenticatedAccountRoute = AuthenticatedAccountRouteImport.update({
   path: '/account',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedAdminRouteRoute = AuthenticatedAdminRouteRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedCustomerRouteRoute =
   AuthenticatedCustomerRouteRouteImport.update({
     id: '/customer',
@@ -178,15 +184,15 @@ const ProductSlugRoute = ProductSlugRouteImport.update({
 } as any)
 const AuthenticatedAdminDashboardRoute =
   AuthenticatedAdminDashboardRouteImport.update({
-    id: '/admin/dashboard',
-    path: '/admin/dashboard',
-    getParentRoute: () => AuthenticatedRouteRoute,
+    id: '/dashboard',
+    path: '/dashboard',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
 const AuthenticatedAdminProductsRoute =
   AuthenticatedAdminProductsRouteImport.update({
-    id: '/admin/products',
-    path: '/admin/products',
-    getParentRoute: () => AuthenticatedRouteRoute,
+    id: '/products',
+    path: '/products',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
 const AuthenticatedCustomerIndexRoute =
   AuthenticatedCustomerIndexRouteImport.update({
@@ -251,6 +257,7 @@ export interface FileRoutesByFullPath {
   '/track': typeof TrackRoute
   '/vendor': typeof VendorRoute
   '/wishlist': typeof WishlistRoute
+  '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/customer': typeof AuthenticatedCustomerRouteRouteWithChildren
   '/account': typeof AuthenticatedAccountRoute
   '/orders': typeof AuthenticatedOrdersRoute
@@ -287,6 +294,7 @@ export interface FileRoutesByTo {
   '/track': typeof TrackRoute
   '/vendor': typeof VendorRoute
   '/wishlist': typeof WishlistRoute
+  '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/account': typeof AuthenticatedAccountRoute
   '/orders': typeof AuthenticatedOrdersRoute
   '/vendor-dashboard': typeof AuthenticatedVendorDashboardRoute
@@ -324,6 +332,7 @@ export interface FileRoutesById {
   '/track': typeof TrackRoute
   '/vendor': typeof VendorRoute
   '/wishlist': typeof WishlistRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/_authenticated/customer': typeof AuthenticatedCustomerRouteRouteWithChildren
   '/_authenticated/account': typeof AuthenticatedAccountRoute
   '/_authenticated/orders': typeof AuthenticatedOrdersRoute
@@ -362,6 +371,7 @@ export interface FileRouteTypes {
     | '/track'
     | '/vendor'
     | '/wishlist'
+    | '/admin'
     | '/customer'
     | '/account'
     | '/orders'
@@ -398,6 +408,7 @@ export interface FileRouteTypes {
     | '/track'
     | '/vendor'
     | '/wishlist'
+    | '/admin'
     | '/account'
     | '/orders'
     | '/vendor-dashboard'
@@ -434,6 +445,7 @@ export interface FileRouteTypes {
     | '/track'
     | '/vendor'
     | '/wishlist'
+    | '/_authenticated/admin'
     | '/_authenticated/customer'
     | '/_authenticated/account'
     | '/_authenticated/orders'
@@ -625,6 +637,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAccountRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/customer': {
       id: '/_authenticated/customer'
       path: '/customer'
@@ -662,17 +681,17 @@ declare module '@tanstack/react-router' {
     }
     '/_authenticated/admin/dashboard': {
       id: '/_authenticated/admin/dashboard'
-      path: '/admin/dashboard'
+      path: '/dashboard'
       fullPath: '/admin/dashboard'
       preLoaderRoute: typeof AuthenticatedAdminDashboardRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+      parentRoute: typeof AuthenticatedAdminRouteRoute
     }
     '/_authenticated/admin/products': {
       id: '/_authenticated/admin/products'
-      path: '/admin/products'
+      path: '/products'
       fullPath: '/admin/products'
       preLoaderRoute: typeof AuthenticatedAdminProductsRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+      parentRoute: typeof AuthenticatedAdminRouteRoute
     }
     '/_authenticated/customer/': {
       id: '/_authenticated/customer/'
@@ -726,6 +745,22 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedAdminRouteRouteChildren {
+  AuthenticatedAdminDashboardRoute: typeof AuthenticatedAdminDashboardRoute
+  AuthenticatedAdminProductsRoute: typeof AuthenticatedAdminProductsRoute
+}
+
+const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren =
+  {
+    AuthenticatedAdminDashboardRoute: AuthenticatedAdminDashboardRoute,
+    AuthenticatedAdminProductsRoute: AuthenticatedAdminProductsRoute,
+  }
+
+const AuthenticatedAdminRouteRouteWithChildren =
+  AuthenticatedAdminRouteRoute._addFileChildren(
+    AuthenticatedAdminRouteRouteChildren,
+  )
+
 interface AuthenticatedCustomerRouteRouteChildren {
   AuthenticatedCustomerAddressesRoute: typeof AuthenticatedCustomerAddressesRoute
   AuthenticatedCustomerNotificationsRoute: typeof AuthenticatedCustomerNotificationsRoute
@@ -754,21 +789,19 @@ const AuthenticatedCustomerRouteRouteWithChildren =
   )
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRouteRoute: typeof AuthenticatedAdminRouteRouteWithChildren
   AuthenticatedCustomerRouteRoute: typeof AuthenticatedCustomerRouteRouteWithChildren
   AuthenticatedAccountRoute: typeof AuthenticatedAccountRoute
   AuthenticatedOrdersRoute: typeof AuthenticatedOrdersRoute
   AuthenticatedVendorDashboardRoute: typeof AuthenticatedVendorDashboardRoute
-  AuthenticatedAdminDashboardRoute: typeof AuthenticatedAdminDashboardRoute
-  AuthenticatedAdminProductsRoute: typeof AuthenticatedAdminProductsRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminRouteRoute: AuthenticatedAdminRouteRouteWithChildren,
   AuthenticatedCustomerRouteRoute: AuthenticatedCustomerRouteRouteWithChildren,
   AuthenticatedAccountRoute: AuthenticatedAccountRoute,
   AuthenticatedOrdersRoute: AuthenticatedOrdersRoute,
   AuthenticatedVendorDashboardRoute: AuthenticatedVendorDashboardRoute,
-  AuthenticatedAdminDashboardRoute: AuthenticatedAdminDashboardRoute,
-  AuthenticatedAdminProductsRoute: AuthenticatedAdminProductsRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
