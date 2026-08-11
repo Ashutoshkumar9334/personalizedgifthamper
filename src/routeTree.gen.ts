@@ -37,6 +37,7 @@ import { Route as CategorySlugRouteImport } from './routes/category.$slug'
 import { Route as ProductSlugRouteImport } from './routes/product.$slug'
 import { Route as AuthenticatedAdminDashboardRouteImport } from './routes/_authenticated/admin/dashboard'
 import { Route as AuthenticatedAdminProductsRouteImport } from './routes/_authenticated/admin/products'
+import { Route as AuthenticatedCustomerIndexRouteImport } from './routes/_authenticated/customer/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -181,6 +182,12 @@ const AuthenticatedAdminProductsRoute =
     path: '/admin/products',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedCustomerIndexRoute =
+  AuthenticatedCustomerIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedCustomerRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -202,7 +209,7 @@ export interface FileRoutesByFullPath {
   '/track': typeof TrackRoute
   '/vendor': typeof VendorRoute
   '/wishlist': typeof WishlistRoute
-  '/customer': typeof AuthenticatedCustomerRouteRoute
+  '/customer': typeof AuthenticatedCustomerRouteRouteWithChildren
   '/account': typeof AuthenticatedAccountRoute
   '/orders': typeof AuthenticatedOrdersRoute
   '/vendor-dashboard': typeof AuthenticatedVendorDashboardRoute
@@ -210,6 +217,7 @@ export interface FileRoutesByFullPath {
   '/product/$slug': typeof ProductSlugRoute
   '/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
   '/admin/products': typeof AuthenticatedAdminProductsRoute
+  '/customer/': typeof AuthenticatedCustomerIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -231,7 +239,6 @@ export interface FileRoutesByTo {
   '/track': typeof TrackRoute
   '/vendor': typeof VendorRoute
   '/wishlist': typeof WishlistRoute
-  '/customer': typeof AuthenticatedCustomerRouteRoute
   '/account': typeof AuthenticatedAccountRoute
   '/orders': typeof AuthenticatedOrdersRoute
   '/vendor-dashboard': typeof AuthenticatedVendorDashboardRoute
@@ -239,6 +246,7 @@ export interface FileRoutesByTo {
   '/product/$slug': typeof ProductSlugRoute
   '/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
   '/admin/products': typeof AuthenticatedAdminProductsRoute
+  '/customer': typeof AuthenticatedCustomerIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -262,7 +270,7 @@ export interface FileRoutesById {
   '/track': typeof TrackRoute
   '/vendor': typeof VendorRoute
   '/wishlist': typeof WishlistRoute
-  '/_authenticated/customer': typeof AuthenticatedCustomerRouteRoute
+  '/_authenticated/customer': typeof AuthenticatedCustomerRouteRouteWithChildren
   '/_authenticated/account': typeof AuthenticatedAccountRoute
   '/_authenticated/orders': typeof AuthenticatedOrdersRoute
   '/_authenticated/vendor-dashboard': typeof AuthenticatedVendorDashboardRoute
@@ -270,6 +278,7 @@ export interface FileRoutesById {
   '/product/$slug': typeof ProductSlugRoute
   '/_authenticated/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
   '/_authenticated/admin/products': typeof AuthenticatedAdminProductsRoute
+  '/_authenticated/customer/': typeof AuthenticatedCustomerIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -301,6 +310,7 @@ export interface FileRouteTypes {
     | '/product/$slug'
     | '/admin/dashboard'
     | '/admin/products'
+    | '/customer/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -322,7 +332,6 @@ export interface FileRouteTypes {
     | '/track'
     | '/vendor'
     | '/wishlist'
-    | '/customer'
     | '/account'
     | '/orders'
     | '/vendor-dashboard'
@@ -330,6 +339,7 @@ export interface FileRouteTypes {
     | '/product/$slug'
     | '/admin/dashboard'
     | '/admin/products'
+    | '/customer'
   id:
     | '__root__'
     | '/'
@@ -360,6 +370,7 @@ export interface FileRouteTypes {
     | '/product/$slug'
     | '/_authenticated/admin/dashboard'
     | '/_authenticated/admin/products'
+    | '/_authenticated/customer/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -585,11 +596,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminProductsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/customer/': {
+      id: '/_authenticated/customer/'
+      path: '/'
+      fullPath: '/customer/'
+      preLoaderRoute: typeof AuthenticatedCustomerIndexRouteImport
+      parentRoute: typeof AuthenticatedCustomerRouteRoute
+    }
   }
 }
 
+interface AuthenticatedCustomerRouteRouteChildren {
+  AuthenticatedCustomerIndexRoute: typeof AuthenticatedCustomerIndexRoute
+}
+
+const AuthenticatedCustomerRouteRouteChildren: AuthenticatedCustomerRouteRouteChildren =
+  {
+    AuthenticatedCustomerIndexRoute: AuthenticatedCustomerIndexRoute,
+  }
+
+const AuthenticatedCustomerRouteRouteWithChildren =
+  AuthenticatedCustomerRouteRoute._addFileChildren(
+    AuthenticatedCustomerRouteRouteChildren,
+  )
+
 interface AuthenticatedRouteRouteChildren {
-  AuthenticatedCustomerRouteRoute: typeof AuthenticatedCustomerRouteRoute
+  AuthenticatedCustomerRouteRoute: typeof AuthenticatedCustomerRouteRouteWithChildren
   AuthenticatedAccountRoute: typeof AuthenticatedAccountRoute
   AuthenticatedOrdersRoute: typeof AuthenticatedOrdersRoute
   AuthenticatedVendorDashboardRoute: typeof AuthenticatedVendorDashboardRoute
@@ -598,7 +630,7 @@ interface AuthenticatedRouteRouteChildren {
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
-  AuthenticatedCustomerRouteRoute: AuthenticatedCustomerRouteRoute,
+  AuthenticatedCustomerRouteRoute: AuthenticatedCustomerRouteRouteWithChildren,
   AuthenticatedAccountRoute: AuthenticatedAccountRoute,
   AuthenticatedOrdersRoute: AuthenticatedOrdersRoute,
   AuthenticatedVendorDashboardRoute: AuthenticatedVendorDashboardRoute,
