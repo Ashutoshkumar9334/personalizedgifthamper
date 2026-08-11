@@ -39,6 +39,7 @@ import { Route as AuthenticatedAdminDashboardRouteImport } from './routes/_authe
 import { Route as AuthenticatedAdminProductsRouteImport } from './routes/_authenticated/admin/products'
 import { Route as AuthenticatedCustomerIndexRouteImport } from './routes/_authenticated/customer/index'
 import { Route as AuthenticatedCustomerAddressesRouteImport } from './routes/_authenticated/customer/addresses'
+import { Route as AuthenticatedCustomerNotificationsRouteImport } from './routes/_authenticated/customer/notifications'
 import { Route as AuthenticatedCustomerOrdersRouteImport } from './routes/_authenticated/customer/orders'
 import { Route as AuthenticatedCustomerProfileRouteImport } from './routes/_authenticated/customer/profile'
 import { Route as AuthenticatedCustomerWishlistRouteImport } from './routes/_authenticated/customer/wishlist'
@@ -198,6 +199,12 @@ const AuthenticatedCustomerAddressesRoute =
     path: '/addresses',
     getParentRoute: () => AuthenticatedCustomerRouteRoute,
   } as any)
+const AuthenticatedCustomerNotificationsRoute =
+  AuthenticatedCustomerNotificationsRouteImport.update({
+    id: '/notifications',
+    path: '/notifications',
+    getParentRoute: () => AuthenticatedCustomerRouteRoute,
+  } as any)
 const AuthenticatedCustomerOrdersRoute =
   AuthenticatedCustomerOrdersRouteImport.update({
     id: '/orders',
@@ -246,6 +253,7 @@ export interface FileRoutesByFullPath {
   '/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
   '/admin/products': typeof AuthenticatedAdminProductsRoute
   '/customer/addresses': typeof AuthenticatedCustomerAddressesRoute
+  '/customer/notifications': typeof AuthenticatedCustomerNotificationsRoute
   '/customer/orders': typeof AuthenticatedCustomerOrdersRoute
   '/customer/profile': typeof AuthenticatedCustomerProfileRoute
   '/customer/wishlist': typeof AuthenticatedCustomerWishlistRoute
@@ -279,6 +287,7 @@ export interface FileRoutesByTo {
   '/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
   '/admin/products': typeof AuthenticatedAdminProductsRoute
   '/customer/addresses': typeof AuthenticatedCustomerAddressesRoute
+  '/customer/notifications': typeof AuthenticatedCustomerNotificationsRoute
   '/customer/orders': typeof AuthenticatedCustomerOrdersRoute
   '/customer/profile': typeof AuthenticatedCustomerProfileRoute
   '/customer/wishlist': typeof AuthenticatedCustomerWishlistRoute
@@ -315,6 +324,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
   '/_authenticated/admin/products': typeof AuthenticatedAdminProductsRoute
   '/_authenticated/customer/addresses': typeof AuthenticatedCustomerAddressesRoute
+  '/_authenticated/customer/notifications': typeof AuthenticatedCustomerNotificationsRoute
   '/_authenticated/customer/orders': typeof AuthenticatedCustomerOrdersRoute
   '/_authenticated/customer/profile': typeof AuthenticatedCustomerProfileRoute
   '/_authenticated/customer/wishlist': typeof AuthenticatedCustomerWishlistRoute
@@ -351,6 +361,7 @@ export interface FileRouteTypes {
     | '/admin/dashboard'
     | '/admin/products'
     | '/customer/addresses'
+    | '/customer/notifications'
     | '/customer/orders'
     | '/customer/profile'
     | '/customer/wishlist'
@@ -384,6 +395,7 @@ export interface FileRouteTypes {
     | '/admin/dashboard'
     | '/admin/products'
     | '/customer/addresses'
+    | '/customer/notifications'
     | '/customer/orders'
     | '/customer/profile'
     | '/customer/wishlist'
@@ -419,6 +431,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/dashboard'
     | '/_authenticated/admin/products'
     | '/_authenticated/customer/addresses'
+    | '/_authenticated/customer/notifications'
     | '/_authenticated/customer/orders'
     | '/_authenticated/customer/profile'
     | '/_authenticated/customer/wishlist'
@@ -662,6 +675,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCustomerAddressesRouteImport
       parentRoute: typeof AuthenticatedCustomerRouteRoute
     }
+    '/_authenticated/customer/notifications': {
+      id: '/_authenticated/customer/notifications'
+      path: '/notifications'
+      fullPath: '/customer/notifications'
+      preLoaderRoute: typeof AuthenticatedCustomerNotificationsRouteImport
+      parentRoute: typeof AuthenticatedCustomerRouteRoute
+    }
     '/_authenticated/customer/orders': {
       id: '/_authenticated/customer/orders'
       path: '/orders'
@@ -688,6 +708,7 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedCustomerRouteRouteChildren {
   AuthenticatedCustomerAddressesRoute: typeof AuthenticatedCustomerAddressesRoute
+  AuthenticatedCustomerNotificationsRoute: typeof AuthenticatedCustomerNotificationsRoute
   AuthenticatedCustomerOrdersRoute: typeof AuthenticatedCustomerOrdersRoute
   AuthenticatedCustomerProfileRoute: typeof AuthenticatedCustomerProfileRoute
   AuthenticatedCustomerWishlistRoute: typeof AuthenticatedCustomerWishlistRoute
@@ -697,6 +718,8 @@ interface AuthenticatedCustomerRouteRouteChildren {
 const AuthenticatedCustomerRouteRouteChildren: AuthenticatedCustomerRouteRouteChildren =
   {
     AuthenticatedCustomerAddressesRoute: AuthenticatedCustomerAddressesRoute,
+    AuthenticatedCustomerNotificationsRoute:
+      AuthenticatedCustomerNotificationsRoute,
     AuthenticatedCustomerOrdersRoute: AuthenticatedCustomerOrdersRoute,
     AuthenticatedCustomerProfileRoute: AuthenticatedCustomerProfileRoute,
     AuthenticatedCustomerWishlistRoute: AuthenticatedCustomerWishlistRoute,
