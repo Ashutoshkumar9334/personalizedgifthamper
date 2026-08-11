@@ -39,6 +39,7 @@ import { Route as AuthenticatedAdminDashboardRouteImport } from './routes/_authe
 import { Route as AuthenticatedAdminProductsRouteImport } from './routes/_authenticated/admin/products'
 import { Route as AuthenticatedCustomerIndexRouteImport } from './routes/_authenticated/customer/index'
 import { Route as AuthenticatedCustomerOrdersRouteImport } from './routes/_authenticated/customer/orders'
+import { Route as AuthenticatedCustomerProfileRouteImport } from './routes/_authenticated/customer/profile'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -195,6 +196,12 @@ const AuthenticatedCustomerOrdersRoute =
     path: '/orders',
     getParentRoute: () => AuthenticatedCustomerRouteRoute,
   } as any)
+const AuthenticatedCustomerProfileRoute =
+  AuthenticatedCustomerProfileRouteImport.update({
+    id: '/profile',
+    path: '/profile',
+    getParentRoute: () => AuthenticatedCustomerRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -225,6 +232,7 @@ export interface FileRoutesByFullPath {
   '/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
   '/admin/products': typeof AuthenticatedAdminProductsRoute
   '/customer/orders': typeof AuthenticatedCustomerOrdersRoute
+  '/customer/profile': typeof AuthenticatedCustomerProfileRoute
   '/customer/': typeof AuthenticatedCustomerIndexRoute
 }
 export interface FileRoutesByTo {
@@ -255,6 +263,7 @@ export interface FileRoutesByTo {
   '/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
   '/admin/products': typeof AuthenticatedAdminProductsRoute
   '/customer/orders': typeof AuthenticatedCustomerOrdersRoute
+  '/customer/profile': typeof AuthenticatedCustomerProfileRoute
   '/customer': typeof AuthenticatedCustomerIndexRoute
 }
 export interface FileRoutesById {
@@ -288,6 +297,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
   '/_authenticated/admin/products': typeof AuthenticatedAdminProductsRoute
   '/_authenticated/customer/orders': typeof AuthenticatedCustomerOrdersRoute
+  '/_authenticated/customer/profile': typeof AuthenticatedCustomerProfileRoute
   '/_authenticated/customer/': typeof AuthenticatedCustomerIndexRoute
 }
 export interface FileRouteTypes {
@@ -321,6 +331,7 @@ export interface FileRouteTypes {
     | '/admin/dashboard'
     | '/admin/products'
     | '/customer/orders'
+    | '/customer/profile'
     | '/customer/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -351,6 +362,7 @@ export interface FileRouteTypes {
     | '/admin/dashboard'
     | '/admin/products'
     | '/customer/orders'
+    | '/customer/profile'
     | '/customer'
   id:
     | '__root__'
@@ -383,6 +395,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/dashboard'
     | '/_authenticated/admin/products'
     | '/_authenticated/customer/orders'
+    | '/_authenticated/customer/profile'
     | '/_authenticated/customer/'
   fileRoutesById: FileRoutesById
 }
@@ -623,17 +636,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCustomerOrdersRouteImport
       parentRoute: typeof AuthenticatedCustomerRouteRoute
     }
+    '/_authenticated/customer/profile': {
+      id: '/_authenticated/customer/profile'
+      path: '/profile'
+      fullPath: '/customer/profile'
+      preLoaderRoute: typeof AuthenticatedCustomerProfileRouteImport
+      parentRoute: typeof AuthenticatedCustomerRouteRoute
+    }
   }
 }
 
 interface AuthenticatedCustomerRouteRouteChildren {
   AuthenticatedCustomerOrdersRoute: typeof AuthenticatedCustomerOrdersRoute
+  AuthenticatedCustomerProfileRoute: typeof AuthenticatedCustomerProfileRoute
   AuthenticatedCustomerIndexRoute: typeof AuthenticatedCustomerIndexRoute
 }
 
 const AuthenticatedCustomerRouteRouteChildren: AuthenticatedCustomerRouteRouteChildren =
   {
     AuthenticatedCustomerOrdersRoute: AuthenticatedCustomerOrdersRoute,
+    AuthenticatedCustomerProfileRoute: AuthenticatedCustomerProfileRoute,
     AuthenticatedCustomerIndexRoute: AuthenticatedCustomerIndexRoute,
   }
 
