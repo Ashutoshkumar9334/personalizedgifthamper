@@ -23,18 +23,29 @@ import { Route as FaqRouteImport } from './routes/faq'
 import { Route as NewArrivalsRouteImport } from './routes/new-arrivals'
 import { Route as OffersRouteImport } from './routes/offers'
 import { Route as OrderSuccessRouteImport } from './routes/order-success'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SearchRouteImport } from './routes/search'
 import { Route as ShopRouteImport } from './routes/shop'
 import { Route as TrackRouteImport } from './routes/track'
 import { Route as VendorRouteImport } from './routes/vendor'
 import { Route as WishlistRouteImport } from './routes/wishlist'
 import { Route as AuthenticatedAccountRouteImport } from './routes/_authenticated/account'
+import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authenticated/admin/route'
+import { Route as AuthenticatedCustomerRouteRouteImport } from './routes/_authenticated/customer/route'
 import { Route as AuthenticatedOrdersRouteImport } from './routes/_authenticated/orders'
 import { Route as AuthenticatedVendorDashboardRouteImport } from './routes/_authenticated/vendor-dashboard'
 import { Route as CategorySlugRouteImport } from './routes/category.$slug'
 import { Route as ProductSlugRouteImport } from './routes/product.$slug'
+import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
 import { Route as AuthenticatedAdminDashboardRouteImport } from './routes/_authenticated/admin/dashboard'
 import { Route as AuthenticatedAdminProductsRouteImport } from './routes/_authenticated/admin/products'
+import { Route as AuthenticatedCustomerIndexRouteImport } from './routes/_authenticated/customer/index'
+import { Route as AuthenticatedCustomerAddressesRouteImport } from './routes/_authenticated/customer/addresses'
+import { Route as AuthenticatedCustomerNotificationsRouteImport } from './routes/_authenticated/customer/notifications'
+import { Route as AuthenticatedCustomerOrdersRouteImport } from './routes/_authenticated/customer/orders'
+import { Route as AuthenticatedCustomerProfileRouteImport } from './routes/_authenticated/customer/profile'
+import { Route as AuthenticatedCustomerSettingsRouteImport } from './routes/_authenticated/customer/settings'
+import { Route as AuthenticatedCustomerWishlistRouteImport } from './routes/_authenticated/customer/wishlist'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -105,6 +116,11 @@ const OrderSuccessRoute = OrderSuccessRouteImport.update({
   path: '/order-success',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SearchRoute = SearchRouteImport.update({
   id: '/search',
   path: '/search',
@@ -135,6 +151,17 @@ const AuthenticatedAccountRoute = AuthenticatedAccountRouteImport.update({
   path: '/account',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedAdminRouteRoute = AuthenticatedAdminRouteRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedCustomerRouteRoute =
+  AuthenticatedCustomerRouteRouteImport.update({
+    id: '/customer',
+    path: '/customer',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedOrdersRoute = AuthenticatedOrdersRouteImport.update({
   id: '/orders',
   path: '/orders',
@@ -156,17 +183,64 @@ const ProductSlugRoute = ProductSlugRouteImport.update({
   path: '/product/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedAdminRouteRoute,
+} as any)
 const AuthenticatedAdminDashboardRoute =
   AuthenticatedAdminDashboardRouteImport.update({
-    id: '/admin/dashboard',
-    path: '/admin/dashboard',
-    getParentRoute: () => AuthenticatedRouteRoute,
+    id: '/dashboard',
+    path: '/dashboard',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
 const AuthenticatedAdminProductsRoute =
   AuthenticatedAdminProductsRouteImport.update({
-    id: '/admin/products',
-    path: '/admin/products',
-    getParentRoute: () => AuthenticatedRouteRoute,
+    id: '/products',
+    path: '/products',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedCustomerIndexRoute =
+  AuthenticatedCustomerIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedCustomerRouteRoute,
+  } as any)
+const AuthenticatedCustomerAddressesRoute =
+  AuthenticatedCustomerAddressesRouteImport.update({
+    id: '/addresses',
+    path: '/addresses',
+    getParentRoute: () => AuthenticatedCustomerRouteRoute,
+  } as any)
+const AuthenticatedCustomerNotificationsRoute =
+  AuthenticatedCustomerNotificationsRouteImport.update({
+    id: '/notifications',
+    path: '/notifications',
+    getParentRoute: () => AuthenticatedCustomerRouteRoute,
+  } as any)
+const AuthenticatedCustomerOrdersRoute =
+  AuthenticatedCustomerOrdersRouteImport.update({
+    id: '/orders',
+    path: '/orders',
+    getParentRoute: () => AuthenticatedCustomerRouteRoute,
+  } as any)
+const AuthenticatedCustomerProfileRoute =
+  AuthenticatedCustomerProfileRouteImport.update({
+    id: '/profile',
+    path: '/profile',
+    getParentRoute: () => AuthenticatedCustomerRouteRoute,
+  } as any)
+const AuthenticatedCustomerSettingsRoute =
+  AuthenticatedCustomerSettingsRouteImport.update({
+    id: '/settings',
+    path: '/settings',
+    getParentRoute: () => AuthenticatedCustomerRouteRoute,
+  } as any)
+const AuthenticatedCustomerWishlistRoute =
+  AuthenticatedCustomerWishlistRouteImport.update({
+    id: '/wishlist',
+    path: '/wishlist',
+    getParentRoute: () => AuthenticatedCustomerRouteRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -183,11 +257,14 @@ export interface FileRoutesByFullPath {
   '/new-arrivals': typeof NewArrivalsRoute
   '/offers': typeof OffersRoute
   '/order-success': typeof OrderSuccessRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/search': typeof SearchRoute
   '/shop': typeof ShopRoute
   '/track': typeof TrackRoute
   '/vendor': typeof VendorRoute
   '/wishlist': typeof WishlistRoute
+  '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
+  '/customer': typeof AuthenticatedCustomerRouteRouteWithChildren
   '/account': typeof AuthenticatedAccountRoute
   '/orders': typeof AuthenticatedOrdersRoute
   '/vendor-dashboard': typeof AuthenticatedVendorDashboardRoute
@@ -195,6 +272,14 @@ export interface FileRoutesByFullPath {
   '/product/$slug': typeof ProductSlugRoute
   '/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
   '/admin/products': typeof AuthenticatedAdminProductsRoute
+  '/customer/addresses': typeof AuthenticatedCustomerAddressesRoute
+  '/customer/notifications': typeof AuthenticatedCustomerNotificationsRoute
+  '/customer/orders': typeof AuthenticatedCustomerOrdersRoute
+  '/customer/profile': typeof AuthenticatedCustomerProfileRoute
+  '/customer/settings': typeof AuthenticatedCustomerSettingsRoute
+  '/customer/wishlist': typeof AuthenticatedCustomerWishlistRoute
+  '/admin/': typeof AuthenticatedAdminIndexRoute
+  '/customer/': typeof AuthenticatedCustomerIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -210,6 +295,7 @@ export interface FileRoutesByTo {
   '/new-arrivals': typeof NewArrivalsRoute
   '/offers': typeof OffersRoute
   '/order-success': typeof OrderSuccessRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/search': typeof SearchRoute
   '/shop': typeof ShopRoute
   '/track': typeof TrackRoute
@@ -222,6 +308,14 @@ export interface FileRoutesByTo {
   '/product/$slug': typeof ProductSlugRoute
   '/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
   '/admin/products': typeof AuthenticatedAdminProductsRoute
+  '/customer/addresses': typeof AuthenticatedCustomerAddressesRoute
+  '/customer/notifications': typeof AuthenticatedCustomerNotificationsRoute
+  '/customer/orders': typeof AuthenticatedCustomerOrdersRoute
+  '/customer/profile': typeof AuthenticatedCustomerProfileRoute
+  '/customer/settings': typeof AuthenticatedCustomerSettingsRoute
+  '/customer/wishlist': typeof AuthenticatedCustomerWishlistRoute
+  '/admin': typeof AuthenticatedAdminIndexRoute
+  '/customer': typeof AuthenticatedCustomerIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -239,11 +333,14 @@ export interface FileRoutesById {
   '/new-arrivals': typeof NewArrivalsRoute
   '/offers': typeof OffersRoute
   '/order-success': typeof OrderSuccessRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/search': typeof SearchRoute
   '/shop': typeof ShopRoute
   '/track': typeof TrackRoute
   '/vendor': typeof VendorRoute
   '/wishlist': typeof WishlistRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRouteRouteWithChildren
+  '/_authenticated/customer': typeof AuthenticatedCustomerRouteRouteWithChildren
   '/_authenticated/account': typeof AuthenticatedAccountRoute
   '/_authenticated/orders': typeof AuthenticatedOrdersRoute
   '/_authenticated/vendor-dashboard': typeof AuthenticatedVendorDashboardRoute
@@ -251,6 +348,14 @@ export interface FileRoutesById {
   '/product/$slug': typeof ProductSlugRoute
   '/_authenticated/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
   '/_authenticated/admin/products': typeof AuthenticatedAdminProductsRoute
+  '/_authenticated/customer/addresses': typeof AuthenticatedCustomerAddressesRoute
+  '/_authenticated/customer/notifications': typeof AuthenticatedCustomerNotificationsRoute
+  '/_authenticated/customer/orders': typeof AuthenticatedCustomerOrdersRoute
+  '/_authenticated/customer/profile': typeof AuthenticatedCustomerProfileRoute
+  '/_authenticated/customer/settings': typeof AuthenticatedCustomerSettingsRoute
+  '/_authenticated/customer/wishlist': typeof AuthenticatedCustomerWishlistRoute
+  '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
+  '/_authenticated/customer/': typeof AuthenticatedCustomerIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -268,11 +373,14 @@ export interface FileRouteTypes {
     | '/new-arrivals'
     | '/offers'
     | '/order-success'
+    | '/reset-password'
     | '/search'
     | '/shop'
     | '/track'
     | '/vendor'
     | '/wishlist'
+    | '/admin'
+    | '/customer'
     | '/account'
     | '/orders'
     | '/vendor-dashboard'
@@ -280,6 +388,14 @@ export interface FileRouteTypes {
     | '/product/$slug'
     | '/admin/dashboard'
     | '/admin/products'
+    | '/customer/addresses'
+    | '/customer/notifications'
+    | '/customer/orders'
+    | '/customer/profile'
+    | '/customer/settings'
+    | '/customer/wishlist'
+    | '/admin/'
+    | '/customer/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -295,6 +411,7 @@ export interface FileRouteTypes {
     | '/new-arrivals'
     | '/offers'
     | '/order-success'
+    | '/reset-password'
     | '/search'
     | '/shop'
     | '/track'
@@ -307,6 +424,14 @@ export interface FileRouteTypes {
     | '/product/$slug'
     | '/admin/dashboard'
     | '/admin/products'
+    | '/customer/addresses'
+    | '/customer/notifications'
+    | '/customer/orders'
+    | '/customer/profile'
+    | '/customer/settings'
+    | '/customer/wishlist'
+    | '/admin'
+    | '/customer'
   id:
     | '__root__'
     | '/'
@@ -323,11 +448,14 @@ export interface FileRouteTypes {
     | '/new-arrivals'
     | '/offers'
     | '/order-success'
+    | '/reset-password'
     | '/search'
     | '/shop'
     | '/track'
     | '/vendor'
     | '/wishlist'
+    | '/_authenticated/admin'
+    | '/_authenticated/customer'
     | '/_authenticated/account'
     | '/_authenticated/orders'
     | '/_authenticated/vendor-dashboard'
@@ -335,6 +463,14 @@ export interface FileRouteTypes {
     | '/product/$slug'
     | '/_authenticated/admin/dashboard'
     | '/_authenticated/admin/products'
+    | '/_authenticated/customer/addresses'
+    | '/_authenticated/customer/notifications'
+    | '/_authenticated/customer/orders'
+    | '/_authenticated/customer/profile'
+    | '/_authenticated/customer/settings'
+    | '/_authenticated/customer/wishlist'
+    | '/_authenticated/admin/'
+    | '/_authenticated/customer/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -352,6 +488,7 @@ export interface RootRouteChildren {
   NewArrivalsRoute: typeof NewArrivalsRoute
   OffersRoute: typeof OffersRoute
   OrderSuccessRoute: typeof OrderSuccessRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   SearchRoute: typeof SearchRoute
   ShopRoute: typeof ShopRoute
   TrackRoute: typeof TrackRoute
@@ -461,6 +598,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OrderSuccessRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/search': {
       id: '/search'
       path: '/search'
@@ -503,6 +647,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAccountRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/customer': {
+      id: '/_authenticated/customer'
+      path: '/customer'
+      fullPath: '/customer'
+      preLoaderRoute: typeof AuthenticatedCustomerRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/orders': {
       id: '/_authenticated/orders'
       path: '/orders'
@@ -531,37 +689,138 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/admin/': {
+      id: '/_authenticated/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
     '/_authenticated/admin/dashboard': {
       id: '/_authenticated/admin/dashboard'
-      path: '/admin/dashboard'
+      path: '/dashboard'
       fullPath: '/admin/dashboard'
       preLoaderRoute: typeof AuthenticatedAdminDashboardRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+      parentRoute: typeof AuthenticatedAdminRouteRoute
     }
     '/_authenticated/admin/products': {
       id: '/_authenticated/admin/products'
-      path: '/admin/products'
+      path: '/products'
       fullPath: '/admin/products'
       preLoaderRoute: typeof AuthenticatedAdminProductsRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/customer/': {
+      id: '/_authenticated/customer/'
+      path: '/'
+      fullPath: '/customer/'
+      preLoaderRoute: typeof AuthenticatedCustomerIndexRouteImport
+      parentRoute: typeof AuthenticatedCustomerRouteRoute
+    }
+    '/_authenticated/customer/addresses': {
+      id: '/_authenticated/customer/addresses'
+      path: '/addresses'
+      fullPath: '/customer/addresses'
+      preLoaderRoute: typeof AuthenticatedCustomerAddressesRouteImport
+      parentRoute: typeof AuthenticatedCustomerRouteRoute
+    }
+    '/_authenticated/customer/notifications': {
+      id: '/_authenticated/customer/notifications'
+      path: '/notifications'
+      fullPath: '/customer/notifications'
+      preLoaderRoute: typeof AuthenticatedCustomerNotificationsRouteImport
+      parentRoute: typeof AuthenticatedCustomerRouteRoute
+    }
+    '/_authenticated/customer/orders': {
+      id: '/_authenticated/customer/orders'
+      path: '/orders'
+      fullPath: '/customer/orders'
+      preLoaderRoute: typeof AuthenticatedCustomerOrdersRouteImport
+      parentRoute: typeof AuthenticatedCustomerRouteRoute
+    }
+    '/_authenticated/customer/profile': {
+      id: '/_authenticated/customer/profile'
+      path: '/profile'
+      fullPath: '/customer/profile'
+      preLoaderRoute: typeof AuthenticatedCustomerProfileRouteImport
+      parentRoute: typeof AuthenticatedCustomerRouteRoute
+    }
+    '/_authenticated/customer/settings': {
+      id: '/_authenticated/customer/settings'
+      path: '/settings'
+      fullPath: '/customer/settings'
+      preLoaderRoute: typeof AuthenticatedCustomerSettingsRouteImport
+      parentRoute: typeof AuthenticatedCustomerRouteRoute
+    }
+    '/_authenticated/customer/wishlist': {
+      id: '/_authenticated/customer/wishlist'
+      path: '/wishlist'
+      fullPath: '/customer/wishlist'
+      preLoaderRoute: typeof AuthenticatedCustomerWishlistRouteImport
+      parentRoute: typeof AuthenticatedCustomerRouteRoute
     }
   }
 }
 
+interface AuthenticatedAdminRouteRouteChildren {
+  AuthenticatedAdminDashboardRoute: typeof AuthenticatedAdminDashboardRoute
+  AuthenticatedAdminProductsRoute: typeof AuthenticatedAdminProductsRoute
+  AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
+}
+
+const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren =
+  {
+    AuthenticatedAdminDashboardRoute: AuthenticatedAdminDashboardRoute,
+    AuthenticatedAdminProductsRoute: AuthenticatedAdminProductsRoute,
+    AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
+  }
+
+const AuthenticatedAdminRouteRouteWithChildren =
+  AuthenticatedAdminRouteRoute._addFileChildren(
+    AuthenticatedAdminRouteRouteChildren,
+  )
+
+interface AuthenticatedCustomerRouteRouteChildren {
+  AuthenticatedCustomerAddressesRoute: typeof AuthenticatedCustomerAddressesRoute
+  AuthenticatedCustomerNotificationsRoute: typeof AuthenticatedCustomerNotificationsRoute
+  AuthenticatedCustomerOrdersRoute: typeof AuthenticatedCustomerOrdersRoute
+  AuthenticatedCustomerProfileRoute: typeof AuthenticatedCustomerProfileRoute
+  AuthenticatedCustomerSettingsRoute: typeof AuthenticatedCustomerSettingsRoute
+  AuthenticatedCustomerWishlistRoute: typeof AuthenticatedCustomerWishlistRoute
+  AuthenticatedCustomerIndexRoute: typeof AuthenticatedCustomerIndexRoute
+}
+
+const AuthenticatedCustomerRouteRouteChildren: AuthenticatedCustomerRouteRouteChildren =
+  {
+    AuthenticatedCustomerAddressesRoute: AuthenticatedCustomerAddressesRoute,
+    AuthenticatedCustomerNotificationsRoute:
+      AuthenticatedCustomerNotificationsRoute,
+    AuthenticatedCustomerOrdersRoute: AuthenticatedCustomerOrdersRoute,
+    AuthenticatedCustomerProfileRoute: AuthenticatedCustomerProfileRoute,
+    AuthenticatedCustomerSettingsRoute: AuthenticatedCustomerSettingsRoute,
+    AuthenticatedCustomerWishlistRoute: AuthenticatedCustomerWishlistRoute,
+    AuthenticatedCustomerIndexRoute: AuthenticatedCustomerIndexRoute,
+  }
+
+const AuthenticatedCustomerRouteRouteWithChildren =
+  AuthenticatedCustomerRouteRoute._addFileChildren(
+    AuthenticatedCustomerRouteRouteChildren,
+  )
+
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRouteRoute: typeof AuthenticatedAdminRouteRouteWithChildren
+  AuthenticatedCustomerRouteRoute: typeof AuthenticatedCustomerRouteRouteWithChildren
   AuthenticatedAccountRoute: typeof AuthenticatedAccountRoute
   AuthenticatedOrdersRoute: typeof AuthenticatedOrdersRoute
   AuthenticatedVendorDashboardRoute: typeof AuthenticatedVendorDashboardRoute
-  AuthenticatedAdminDashboardRoute: typeof AuthenticatedAdminDashboardRoute
-  AuthenticatedAdminProductsRoute: typeof AuthenticatedAdminProductsRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminRouteRoute: AuthenticatedAdminRouteRouteWithChildren,
+  AuthenticatedCustomerRouteRoute: AuthenticatedCustomerRouteRouteWithChildren,
   AuthenticatedAccountRoute: AuthenticatedAccountRoute,
   AuthenticatedOrdersRoute: AuthenticatedOrdersRoute,
   AuthenticatedVendorDashboardRoute: AuthenticatedVendorDashboardRoute,
-  AuthenticatedAdminDashboardRoute: AuthenticatedAdminDashboardRoute,
-  AuthenticatedAdminProductsRoute: AuthenticatedAdminProductsRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
@@ -582,6 +841,7 @@ const rootRouteChildren: RootRouteChildren = {
   NewArrivalsRoute: NewArrivalsRoute,
   OffersRoute: OffersRoute,
   OrderSuccessRoute: OrderSuccessRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   SearchRoute: SearchRoute,
   ShopRoute: ShopRoute,
   TrackRoute: TrackRoute,
@@ -593,13 +853,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

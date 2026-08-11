@@ -125,7 +125,7 @@ export function Header() {
             </Link>
           </Button>
           <Button asChild variant="ghost" size="icon" aria-label="Account">
-            <Link to={user ? "/account" : "/auth"}>
+            <Link to={user ? "/customer" : "/auth"}>
               <User />
             </Link>
           </Button>
