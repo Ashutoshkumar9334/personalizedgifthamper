@@ -32,7 +32,7 @@ const schema = z.object({
     .string()
     .trim()
     .regex(/^[0-9+\-\s]{6,15}$/, "Enter a valid phone number"),
-  address_line1: z.string().trim().min(5, "Add the street address").max(200),
+  line1: z.string().trim().min(5, "Add the street address").max(200),
   city: z.string().trim().min(2, "Add a city").max(80),
   postal_code: z.string().trim().regex(/^[0-9]{6}$/, "Enter a 6-digit PIN code"),
 });
@@ -41,7 +41,7 @@ const blank = {
   label: "Home",
   recipient_name: "",
   phone: "",
-  address_line1: "",
+  line1: "",
   city: "",
   postal_code: "",
 };
@@ -161,8 +161,8 @@ function CustomerAddresses() {
               id="addr-line1"
               className="mt-2"
               maxLength={200}
-              value={form.address_line1}
-              onChange={(e) => set("address_line1", e.target.value)}
+              value={form.line1}
+              onChange={(e) => set("line1", e.target.value)}
             />
           </div>
           <div className="sm:col-span-2">
@@ -187,7 +187,7 @@ function CustomerAddresses() {
               <p className="mt-2 text-sm text-muted-foreground">
                 {a.recipient_name} · {a.phone}
                 <br />
-                {a.address_line1}, {a.city} {a.postal_code}
+                {a.line1}, {a.city} {a.postal_code}
               </p>
             </div>
             <div className="flex gap-2">

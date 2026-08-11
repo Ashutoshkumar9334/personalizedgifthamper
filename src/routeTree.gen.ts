@@ -38,6 +38,7 @@ import { Route as ProductSlugRouteImport } from './routes/product.$slug'
 import { Route as AuthenticatedAdminDashboardRouteImport } from './routes/_authenticated/admin/dashboard'
 import { Route as AuthenticatedAdminProductsRouteImport } from './routes/_authenticated/admin/products'
 import { Route as AuthenticatedCustomerIndexRouteImport } from './routes/_authenticated/customer/index'
+import { Route as AuthenticatedCustomerAddressesRouteImport } from './routes/_authenticated/customer/addresses'
 import { Route as AuthenticatedCustomerOrdersRouteImport } from './routes/_authenticated/customer/orders'
 import { Route as AuthenticatedCustomerProfileRouteImport } from './routes/_authenticated/customer/profile'
 
@@ -190,6 +191,12 @@ const AuthenticatedCustomerIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedCustomerRouteRoute,
   } as any)
+const AuthenticatedCustomerAddressesRoute =
+  AuthenticatedCustomerAddressesRouteImport.update({
+    id: '/addresses',
+    path: '/addresses',
+    getParentRoute: () => AuthenticatedCustomerRouteRoute,
+  } as any)
 const AuthenticatedCustomerOrdersRoute =
   AuthenticatedCustomerOrdersRouteImport.update({
     id: '/orders',
@@ -231,6 +238,7 @@ export interface FileRoutesByFullPath {
   '/product/$slug': typeof ProductSlugRoute
   '/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
   '/admin/products': typeof AuthenticatedAdminProductsRoute
+  '/customer/addresses': typeof AuthenticatedCustomerAddressesRoute
   '/customer/orders': typeof AuthenticatedCustomerOrdersRoute
   '/customer/profile': typeof AuthenticatedCustomerProfileRoute
   '/customer/': typeof AuthenticatedCustomerIndexRoute
@@ -262,6 +270,7 @@ export interface FileRoutesByTo {
   '/product/$slug': typeof ProductSlugRoute
   '/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
   '/admin/products': typeof AuthenticatedAdminProductsRoute
+  '/customer/addresses': typeof AuthenticatedCustomerAddressesRoute
   '/customer/orders': typeof AuthenticatedCustomerOrdersRoute
   '/customer/profile': typeof AuthenticatedCustomerProfileRoute
   '/customer': typeof AuthenticatedCustomerIndexRoute
@@ -296,6 +305,7 @@ export interface FileRoutesById {
   '/product/$slug': typeof ProductSlugRoute
   '/_authenticated/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
   '/_authenticated/admin/products': typeof AuthenticatedAdminProductsRoute
+  '/_authenticated/customer/addresses': typeof AuthenticatedCustomerAddressesRoute
   '/_authenticated/customer/orders': typeof AuthenticatedCustomerOrdersRoute
   '/_authenticated/customer/profile': typeof AuthenticatedCustomerProfileRoute
   '/_authenticated/customer/': typeof AuthenticatedCustomerIndexRoute
@@ -330,6 +340,7 @@ export interface FileRouteTypes {
     | '/product/$slug'
     | '/admin/dashboard'
     | '/admin/products'
+    | '/customer/addresses'
     | '/customer/orders'
     | '/customer/profile'
     | '/customer/'
@@ -361,6 +372,7 @@ export interface FileRouteTypes {
     | '/product/$slug'
     | '/admin/dashboard'
     | '/admin/products'
+    | '/customer/addresses'
     | '/customer/orders'
     | '/customer/profile'
     | '/customer'
@@ -394,6 +406,7 @@ export interface FileRouteTypes {
     | '/product/$slug'
     | '/_authenticated/admin/dashboard'
     | '/_authenticated/admin/products'
+    | '/_authenticated/customer/addresses'
     | '/_authenticated/customer/orders'
     | '/_authenticated/customer/profile'
     | '/_authenticated/customer/'
@@ -629,6 +642,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCustomerIndexRouteImport
       parentRoute: typeof AuthenticatedCustomerRouteRoute
     }
+    '/_authenticated/customer/addresses': {
+      id: '/_authenticated/customer/addresses'
+      path: '/addresses'
+      fullPath: '/customer/addresses'
+      preLoaderRoute: typeof AuthenticatedCustomerAddressesRouteImport
+      parentRoute: typeof AuthenticatedCustomerRouteRoute
+    }
     '/_authenticated/customer/orders': {
       id: '/_authenticated/customer/orders'
       path: '/orders'
@@ -647,6 +667,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedCustomerRouteRouteChildren {
+  AuthenticatedCustomerAddressesRoute: typeof AuthenticatedCustomerAddressesRoute
   AuthenticatedCustomerOrdersRoute: typeof AuthenticatedCustomerOrdersRoute
   AuthenticatedCustomerProfileRoute: typeof AuthenticatedCustomerProfileRoute
   AuthenticatedCustomerIndexRoute: typeof AuthenticatedCustomerIndexRoute
@@ -654,6 +675,7 @@ interface AuthenticatedCustomerRouteRouteChildren {
 
 const AuthenticatedCustomerRouteRouteChildren: AuthenticatedCustomerRouteRouteChildren =
   {
+    AuthenticatedCustomerAddressesRoute: AuthenticatedCustomerAddressesRoute,
     AuthenticatedCustomerOrdersRoute: AuthenticatedCustomerOrdersRoute,
     AuthenticatedCustomerProfileRoute: AuthenticatedCustomerProfileRoute,
     AuthenticatedCustomerIndexRoute: AuthenticatedCustomerIndexRoute,
