@@ -30,6 +30,7 @@ import { Route as TrackRouteImport } from './routes/track'
 import { Route as VendorRouteImport } from './routes/vendor'
 import { Route as WishlistRouteImport } from './routes/wishlist'
 import { Route as AuthenticatedAccountRouteImport } from './routes/_authenticated/account'
+import { Route as AuthenticatedCustomerRouteRouteImport } from './routes/_authenticated/customer/route'
 import { Route as AuthenticatedOrdersRouteImport } from './routes/_authenticated/orders'
 import { Route as AuthenticatedVendorDashboardRouteImport } from './routes/_authenticated/vendor-dashboard'
 import { Route as CategorySlugRouteImport } from './routes/category.$slug'
@@ -141,6 +142,12 @@ const AuthenticatedAccountRoute = AuthenticatedAccountRouteImport.update({
   path: '/account',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedCustomerRouteRoute =
+  AuthenticatedCustomerRouteRouteImport.update({
+    id: '/customer',
+    path: '/customer',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedOrdersRoute = AuthenticatedOrdersRouteImport.update({
   id: '/orders',
   path: '/orders',
@@ -195,6 +202,7 @@ export interface FileRoutesByFullPath {
   '/track': typeof TrackRoute
   '/vendor': typeof VendorRoute
   '/wishlist': typeof WishlistRoute
+  '/customer': typeof AuthenticatedCustomerRouteRoute
   '/account': typeof AuthenticatedAccountRoute
   '/orders': typeof AuthenticatedOrdersRoute
   '/vendor-dashboard': typeof AuthenticatedVendorDashboardRoute
@@ -223,6 +231,7 @@ export interface FileRoutesByTo {
   '/track': typeof TrackRoute
   '/vendor': typeof VendorRoute
   '/wishlist': typeof WishlistRoute
+  '/customer': typeof AuthenticatedCustomerRouteRoute
   '/account': typeof AuthenticatedAccountRoute
   '/orders': typeof AuthenticatedOrdersRoute
   '/vendor-dashboard': typeof AuthenticatedVendorDashboardRoute
@@ -253,6 +262,7 @@ export interface FileRoutesById {
   '/track': typeof TrackRoute
   '/vendor': typeof VendorRoute
   '/wishlist': typeof WishlistRoute
+  '/_authenticated/customer': typeof AuthenticatedCustomerRouteRoute
   '/_authenticated/account': typeof AuthenticatedAccountRoute
   '/_authenticated/orders': typeof AuthenticatedOrdersRoute
   '/_authenticated/vendor-dashboard': typeof AuthenticatedVendorDashboardRoute
@@ -283,6 +293,7 @@ export interface FileRouteTypes {
     | '/track'
     | '/vendor'
     | '/wishlist'
+    | '/customer'
     | '/account'
     | '/orders'
     | '/vendor-dashboard'
@@ -311,6 +322,7 @@ export interface FileRouteTypes {
     | '/track'
     | '/vendor'
     | '/wishlist'
+    | '/customer'
     | '/account'
     | '/orders'
     | '/vendor-dashboard'
@@ -340,6 +352,7 @@ export interface FileRouteTypes {
     | '/track'
     | '/vendor'
     | '/wishlist'
+    | '/_authenticated/customer'
     | '/_authenticated/account'
     | '/_authenticated/orders'
     | '/_authenticated/vendor-dashboard'
@@ -523,6 +536,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAccountRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/customer': {
+      id: '/_authenticated/customer'
+      path: '/customer'
+      fullPath: '/customer'
+      preLoaderRoute: typeof AuthenticatedCustomerRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/orders': {
       id: '/_authenticated/orders'
       path: '/orders'
@@ -569,6 +589,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedCustomerRouteRoute: typeof AuthenticatedCustomerRouteRoute
   AuthenticatedAccountRoute: typeof AuthenticatedAccountRoute
   AuthenticatedOrdersRoute: typeof AuthenticatedOrdersRoute
   AuthenticatedVendorDashboardRoute: typeof AuthenticatedVendorDashboardRoute
@@ -577,6 +598,7 @@ interface AuthenticatedRouteRouteChildren {
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedCustomerRouteRoute: AuthenticatedCustomerRouteRoute,
   AuthenticatedAccountRoute: AuthenticatedAccountRoute,
   AuthenticatedOrdersRoute: AuthenticatedOrdersRoute,
   AuthenticatedVendorDashboardRoute: AuthenticatedVendorDashboardRoute,
