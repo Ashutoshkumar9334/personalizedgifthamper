@@ -42,6 +42,7 @@ import { Route as AuthenticatedCustomerAddressesRouteImport } from './routes/_au
 import { Route as AuthenticatedCustomerNotificationsRouteImport } from './routes/_authenticated/customer/notifications'
 import { Route as AuthenticatedCustomerOrdersRouteImport } from './routes/_authenticated/customer/orders'
 import { Route as AuthenticatedCustomerProfileRouteImport } from './routes/_authenticated/customer/profile'
+import { Route as AuthenticatedCustomerSettingsRouteImport } from './routes/_authenticated/customer/settings'
 import { Route as AuthenticatedCustomerWishlistRouteImport } from './routes/_authenticated/customer/wishlist'
 
 const IndexRoute = IndexRouteImport.update({
@@ -217,6 +218,12 @@ const AuthenticatedCustomerProfileRoute =
     path: '/profile',
     getParentRoute: () => AuthenticatedCustomerRouteRoute,
   } as any)
+const AuthenticatedCustomerSettingsRoute =
+  AuthenticatedCustomerSettingsRouteImport.update({
+    id: '/settings',
+    path: '/settings',
+    getParentRoute: () => AuthenticatedCustomerRouteRoute,
+  } as any)
 const AuthenticatedCustomerWishlistRoute =
   AuthenticatedCustomerWishlistRouteImport.update({
     id: '/wishlist',
@@ -256,6 +263,7 @@ export interface FileRoutesByFullPath {
   '/customer/notifications': typeof AuthenticatedCustomerNotificationsRoute
   '/customer/orders': typeof AuthenticatedCustomerOrdersRoute
   '/customer/profile': typeof AuthenticatedCustomerProfileRoute
+  '/customer/settings': typeof AuthenticatedCustomerSettingsRoute
   '/customer/wishlist': typeof AuthenticatedCustomerWishlistRoute
   '/customer/': typeof AuthenticatedCustomerIndexRoute
 }
@@ -290,6 +298,7 @@ export interface FileRoutesByTo {
   '/customer/notifications': typeof AuthenticatedCustomerNotificationsRoute
   '/customer/orders': typeof AuthenticatedCustomerOrdersRoute
   '/customer/profile': typeof AuthenticatedCustomerProfileRoute
+  '/customer/settings': typeof AuthenticatedCustomerSettingsRoute
   '/customer/wishlist': typeof AuthenticatedCustomerWishlistRoute
   '/customer': typeof AuthenticatedCustomerIndexRoute
 }
@@ -327,6 +336,7 @@ export interface FileRoutesById {
   '/_authenticated/customer/notifications': typeof AuthenticatedCustomerNotificationsRoute
   '/_authenticated/customer/orders': typeof AuthenticatedCustomerOrdersRoute
   '/_authenticated/customer/profile': typeof AuthenticatedCustomerProfileRoute
+  '/_authenticated/customer/settings': typeof AuthenticatedCustomerSettingsRoute
   '/_authenticated/customer/wishlist': typeof AuthenticatedCustomerWishlistRoute
   '/_authenticated/customer/': typeof AuthenticatedCustomerIndexRoute
 }
@@ -364,6 +374,7 @@ export interface FileRouteTypes {
     | '/customer/notifications'
     | '/customer/orders'
     | '/customer/profile'
+    | '/customer/settings'
     | '/customer/wishlist'
     | '/customer/'
   fileRoutesByTo: FileRoutesByTo
@@ -398,6 +409,7 @@ export interface FileRouteTypes {
     | '/customer/notifications'
     | '/customer/orders'
     | '/customer/profile'
+    | '/customer/settings'
     | '/customer/wishlist'
     | '/customer'
   id:
@@ -434,6 +446,7 @@ export interface FileRouteTypes {
     | '/_authenticated/customer/notifications'
     | '/_authenticated/customer/orders'
     | '/_authenticated/customer/profile'
+    | '/_authenticated/customer/settings'
     | '/_authenticated/customer/wishlist'
     | '/_authenticated/customer/'
   fileRoutesById: FileRoutesById
@@ -696,6 +709,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCustomerProfileRouteImport
       parentRoute: typeof AuthenticatedCustomerRouteRoute
     }
+    '/_authenticated/customer/settings': {
+      id: '/_authenticated/customer/settings'
+      path: '/settings'
+      fullPath: '/customer/settings'
+      preLoaderRoute: typeof AuthenticatedCustomerSettingsRouteImport
+      parentRoute: typeof AuthenticatedCustomerRouteRoute
+    }
     '/_authenticated/customer/wishlist': {
       id: '/_authenticated/customer/wishlist'
       path: '/wishlist'
@@ -711,6 +731,7 @@ interface AuthenticatedCustomerRouteRouteChildren {
   AuthenticatedCustomerNotificationsRoute: typeof AuthenticatedCustomerNotificationsRoute
   AuthenticatedCustomerOrdersRoute: typeof AuthenticatedCustomerOrdersRoute
   AuthenticatedCustomerProfileRoute: typeof AuthenticatedCustomerProfileRoute
+  AuthenticatedCustomerSettingsRoute: typeof AuthenticatedCustomerSettingsRoute
   AuthenticatedCustomerWishlistRoute: typeof AuthenticatedCustomerWishlistRoute
   AuthenticatedCustomerIndexRoute: typeof AuthenticatedCustomerIndexRoute
 }
@@ -722,6 +743,7 @@ const AuthenticatedCustomerRouteRouteChildren: AuthenticatedCustomerRouteRouteCh
       AuthenticatedCustomerNotificationsRoute,
     AuthenticatedCustomerOrdersRoute: AuthenticatedCustomerOrdersRoute,
     AuthenticatedCustomerProfileRoute: AuthenticatedCustomerProfileRoute,
+    AuthenticatedCustomerSettingsRoute: AuthenticatedCustomerSettingsRoute,
     AuthenticatedCustomerWishlistRoute: AuthenticatedCustomerWishlistRoute,
     AuthenticatedCustomerIndexRoute: AuthenticatedCustomerIndexRoute,
   }
