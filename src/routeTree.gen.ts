@@ -23,6 +23,7 @@ import { Route as FaqRouteImport } from './routes/faq'
 import { Route as NewArrivalsRouteImport } from './routes/new-arrivals'
 import { Route as OffersRouteImport } from './routes/offers'
 import { Route as OrderSuccessRouteImport } from './routes/order-success'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SearchRouteImport } from './routes/search'
 import { Route as ShopRouteImport } from './routes/shop'
 import { Route as TrackRouteImport } from './routes/track'
@@ -105,6 +106,11 @@ const OrderSuccessRoute = OrderSuccessRouteImport.update({
   path: '/order-success',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SearchRoute = SearchRouteImport.update({
   id: '/search',
   path: '/search',
@@ -183,6 +189,7 @@ export interface FileRoutesByFullPath {
   '/new-arrivals': typeof NewArrivalsRoute
   '/offers': typeof OffersRoute
   '/order-success': typeof OrderSuccessRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/search': typeof SearchRoute
   '/shop': typeof ShopRoute
   '/track': typeof TrackRoute
@@ -210,6 +217,7 @@ export interface FileRoutesByTo {
   '/new-arrivals': typeof NewArrivalsRoute
   '/offers': typeof OffersRoute
   '/order-success': typeof OrderSuccessRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/search': typeof SearchRoute
   '/shop': typeof ShopRoute
   '/track': typeof TrackRoute
@@ -239,6 +247,7 @@ export interface FileRoutesById {
   '/new-arrivals': typeof NewArrivalsRoute
   '/offers': typeof OffersRoute
   '/order-success': typeof OrderSuccessRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/search': typeof SearchRoute
   '/shop': typeof ShopRoute
   '/track': typeof TrackRoute
@@ -268,6 +277,7 @@ export interface FileRouteTypes {
     | '/new-arrivals'
     | '/offers'
     | '/order-success'
+    | '/reset-password'
     | '/search'
     | '/shop'
     | '/track'
@@ -295,6 +305,7 @@ export interface FileRouteTypes {
     | '/new-arrivals'
     | '/offers'
     | '/order-success'
+    | '/reset-password'
     | '/search'
     | '/shop'
     | '/track'
@@ -323,6 +334,7 @@ export interface FileRouteTypes {
     | '/new-arrivals'
     | '/offers'
     | '/order-success'
+    | '/reset-password'
     | '/search'
     | '/shop'
     | '/track'
@@ -352,6 +364,7 @@ export interface RootRouteChildren {
   NewArrivalsRoute: typeof NewArrivalsRoute
   OffersRoute: typeof OffersRoute
   OrderSuccessRoute: typeof OrderSuccessRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   SearchRoute: typeof SearchRoute
   ShopRoute: typeof ShopRoute
   TrackRoute: typeof TrackRoute
@@ -459,6 +472,13 @@ declare module '@tanstack/react-router' {
       path: '/order-success'
       fullPath: '/order-success'
       preLoaderRoute: typeof OrderSuccessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/search': {
@@ -582,6 +602,7 @@ const rootRouteChildren: RootRouteChildren = {
   NewArrivalsRoute: NewArrivalsRoute,
   OffersRoute: OffersRoute,
   OrderSuccessRoute: OrderSuccessRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   SearchRoute: SearchRoute,
   ShopRoute: ShopRoute,
   TrackRoute: TrackRoute,
