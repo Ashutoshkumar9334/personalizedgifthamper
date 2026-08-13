@@ -17,7 +17,7 @@ import { inr } from "@/data/hampers";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth, useIsAdmin } from "@/lib/useAuth";
 
-export const Route = createFileRoute("/_authenticated/admin/dashboard")({
+export const Route = createFileRoute("/_authenticated/admin/orders")({
   head: () => ({
     meta: [
       { title: "Admin Orders Dashboard | A_S Hamper" },
@@ -31,7 +31,7 @@ export const Route = createFileRoute("/_authenticated/admin/dashboard")({
       { name: "robots", content: "noindex" },
     ],
   }),
-  component: AdminDashboard,
+  component: AdminOrders,
 });
 
 const statuses = [
@@ -64,7 +64,7 @@ function itemsOf(value: unknown): OrderItem[] {
   return Array.isArray(value) ? (value as OrderItem[]) : [];
 }
 
-function AdminDashboard() {
+function AdminOrders() {
   const { user } = useAuth();
   const { isAdmin, checked } = useIsAdmin(user?.id);
   const queryClient = useQueryClient();
