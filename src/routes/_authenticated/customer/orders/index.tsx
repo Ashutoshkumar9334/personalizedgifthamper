@@ -10,7 +10,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { orderItemsOf, orderStatusLabels, type OrderStatus } from "@/lib/orders";
 import { useAuth } from "@/lib/useAuth";
 
-export const Route = createFileRoute("/_authenticated/customer/orders")({
+export const Route = createFileRoute("/_authenticated/customer/orders/")({
   head: () => ({
     meta: [
       { title: "My Orders | A_S Hamper" },
