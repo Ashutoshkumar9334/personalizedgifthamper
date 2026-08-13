@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import type { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
+import { getMyRole } from "@/lib/admin.functions";
 
 export function useAuth() {
   const [session, setSession] = useState<Session | null>(null);
@@ -37,11 +38,15 @@ export function useIsAdmin(userId?: string) {
       return;
     }
     let active = true;
-    supabase
-      .rpc("has_role", { _user_id: userId, _role: "admin" })
-      .then(({ data }) => {
+    getMyRole()
+      .then(({ role }) => {
         if (!active) return;
-        setIsAdmin(Boolean(data));
+        setIsAdmin(role === "admin");
+        setChecked(true);
+      })
+      .catch(() => {
+        if (!active) return;
+        setIsAdmin(false);
         setChecked(true);
       });
     return () => {
