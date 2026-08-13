@@ -37,15 +37,15 @@ import { Route as AuthenticatedVendorDashboardRouteImport } from './routes/_auth
 import { Route as CategorySlugRouteImport } from './routes/category.$slug'
 import { Route as ProductSlugRouteImport } from './routes/product.$slug'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
-import { Route as AuthenticatedAdminDashboardRouteImport } from './routes/_authenticated/admin/dashboard'
+import { Route as AuthenticatedAdminOrdersRouteImport } from './routes/_authenticated/admin/orders'
 import { Route as AuthenticatedAdminProductsRouteImport } from './routes/_authenticated/admin/products'
 import { Route as AuthenticatedCustomerIndexRouteImport } from './routes/_authenticated/customer/index'
 import { Route as AuthenticatedCustomerAddressesRouteImport } from './routes/_authenticated/customer/addresses'
 import { Route as AuthenticatedCustomerNotificationsRouteImport } from './routes/_authenticated/customer/notifications'
-import { Route as AuthenticatedCustomerOrdersRouteImport } from './routes/_authenticated/customer/orders'
 import { Route as AuthenticatedCustomerProfileRouteImport } from './routes/_authenticated/customer/profile'
 import { Route as AuthenticatedCustomerSettingsRouteImport } from './routes/_authenticated/customer/settings'
 import { Route as AuthenticatedCustomerWishlistRouteImport } from './routes/_authenticated/customer/wishlist'
+import { Route as AuthenticatedCustomerOrdersIndexRouteImport } from './routes/_authenticated/customer/orders/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -188,10 +188,10 @@ const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthenticatedAdminRouteRoute,
 } as any)
-const AuthenticatedAdminDashboardRoute =
-  AuthenticatedAdminDashboardRouteImport.update({
-    id: '/dashboard',
-    path: '/dashboard',
+const AuthenticatedAdminOrdersRoute =
+  AuthenticatedAdminOrdersRouteImport.update({
+    id: '/orders',
+    path: '/orders',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
 const AuthenticatedAdminProductsRoute =
@@ -218,12 +218,6 @@ const AuthenticatedCustomerNotificationsRoute =
     path: '/notifications',
     getParentRoute: () => AuthenticatedCustomerRouteRoute,
   } as any)
-const AuthenticatedCustomerOrdersRoute =
-  AuthenticatedCustomerOrdersRouteImport.update({
-    id: '/orders',
-    path: '/orders',
-    getParentRoute: () => AuthenticatedCustomerRouteRoute,
-  } as any)
 const AuthenticatedCustomerProfileRoute =
   AuthenticatedCustomerProfileRouteImport.update({
     id: '/profile',
@@ -240,6 +234,12 @@ const AuthenticatedCustomerWishlistRoute =
   AuthenticatedCustomerWishlistRouteImport.update({
     id: '/wishlist',
     path: '/wishlist',
+    getParentRoute: () => AuthenticatedCustomerRouteRoute,
+  } as any)
+const AuthenticatedCustomerOrdersIndexRoute =
+  AuthenticatedCustomerOrdersIndexRouteImport.update({
+    id: '/orders/',
+    path: '/orders/',
     getParentRoute: () => AuthenticatedCustomerRouteRoute,
   } as any)
 
@@ -270,16 +270,16 @@ export interface FileRoutesByFullPath {
   '/vendor-dashboard': typeof AuthenticatedVendorDashboardRoute
   '/category/$slug': typeof CategorySlugRoute
   '/product/$slug': typeof ProductSlugRoute
-  '/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
+  '/admin/orders': typeof AuthenticatedAdminOrdersRoute
   '/admin/products': typeof AuthenticatedAdminProductsRoute
   '/customer/addresses': typeof AuthenticatedCustomerAddressesRoute
   '/customer/notifications': typeof AuthenticatedCustomerNotificationsRoute
-  '/customer/orders': typeof AuthenticatedCustomerOrdersRoute
   '/customer/profile': typeof AuthenticatedCustomerProfileRoute
   '/customer/settings': typeof AuthenticatedCustomerSettingsRoute
   '/customer/wishlist': typeof AuthenticatedCustomerWishlistRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/customer/': typeof AuthenticatedCustomerIndexRoute
+  '/customer/orders/': typeof AuthenticatedCustomerOrdersIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -306,16 +306,16 @@ export interface FileRoutesByTo {
   '/vendor-dashboard': typeof AuthenticatedVendorDashboardRoute
   '/category/$slug': typeof CategorySlugRoute
   '/product/$slug': typeof ProductSlugRoute
-  '/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
+  '/admin/orders': typeof AuthenticatedAdminOrdersRoute
   '/admin/products': typeof AuthenticatedAdminProductsRoute
   '/customer/addresses': typeof AuthenticatedCustomerAddressesRoute
   '/customer/notifications': typeof AuthenticatedCustomerNotificationsRoute
-  '/customer/orders': typeof AuthenticatedCustomerOrdersRoute
   '/customer/profile': typeof AuthenticatedCustomerProfileRoute
   '/customer/settings': typeof AuthenticatedCustomerSettingsRoute
   '/customer/wishlist': typeof AuthenticatedCustomerWishlistRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/customer': typeof AuthenticatedCustomerIndexRoute
+  '/customer/orders': typeof AuthenticatedCustomerOrdersIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -346,16 +346,16 @@ export interface FileRoutesById {
   '/_authenticated/vendor-dashboard': typeof AuthenticatedVendorDashboardRoute
   '/category/$slug': typeof CategorySlugRoute
   '/product/$slug': typeof ProductSlugRoute
-  '/_authenticated/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
+  '/_authenticated/admin/orders': typeof AuthenticatedAdminOrdersRoute
   '/_authenticated/admin/products': typeof AuthenticatedAdminProductsRoute
   '/_authenticated/customer/addresses': typeof AuthenticatedCustomerAddressesRoute
   '/_authenticated/customer/notifications': typeof AuthenticatedCustomerNotificationsRoute
-  '/_authenticated/customer/orders': typeof AuthenticatedCustomerOrdersRoute
   '/_authenticated/customer/profile': typeof AuthenticatedCustomerProfileRoute
   '/_authenticated/customer/settings': typeof AuthenticatedCustomerSettingsRoute
   '/_authenticated/customer/wishlist': typeof AuthenticatedCustomerWishlistRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/customer/': typeof AuthenticatedCustomerIndexRoute
+  '/_authenticated/customer/orders/': typeof AuthenticatedCustomerOrdersIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -386,16 +386,16 @@ export interface FileRouteTypes {
     | '/vendor-dashboard'
     | '/category/$slug'
     | '/product/$slug'
-    | '/admin/dashboard'
+    | '/admin/orders'
     | '/admin/products'
     | '/customer/addresses'
     | '/customer/notifications'
-    | '/customer/orders'
     | '/customer/profile'
     | '/customer/settings'
     | '/customer/wishlist'
     | '/admin/'
     | '/customer/'
+    | '/customer/orders/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -422,16 +422,16 @@ export interface FileRouteTypes {
     | '/vendor-dashboard'
     | '/category/$slug'
     | '/product/$slug'
-    | '/admin/dashboard'
+    | '/admin/orders'
     | '/admin/products'
     | '/customer/addresses'
     | '/customer/notifications'
-    | '/customer/orders'
     | '/customer/profile'
     | '/customer/settings'
     | '/customer/wishlist'
     | '/admin'
     | '/customer'
+    | '/customer/orders'
   id:
     | '__root__'
     | '/'
@@ -461,16 +461,16 @@ export interface FileRouteTypes {
     | '/_authenticated/vendor-dashboard'
     | '/category/$slug'
     | '/product/$slug'
-    | '/_authenticated/admin/dashboard'
+    | '/_authenticated/admin/orders'
     | '/_authenticated/admin/products'
     | '/_authenticated/customer/addresses'
     | '/_authenticated/customer/notifications'
-    | '/_authenticated/customer/orders'
     | '/_authenticated/customer/profile'
     | '/_authenticated/customer/settings'
     | '/_authenticated/customer/wishlist'
     | '/_authenticated/admin/'
     | '/_authenticated/customer/'
+    | '/_authenticated/customer/orders/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -696,11 +696,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
-    '/_authenticated/admin/dashboard': {
-      id: '/_authenticated/admin/dashboard'
-      path: '/dashboard'
-      fullPath: '/admin/dashboard'
-      preLoaderRoute: typeof AuthenticatedAdminDashboardRouteImport
+    '/_authenticated/admin/orders': {
+      id: '/_authenticated/admin/orders'
+      path: '/orders'
+      fullPath: '/admin/orders'
+      preLoaderRoute: typeof AuthenticatedAdminOrdersRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
     '/_authenticated/admin/products': {
@@ -731,13 +731,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCustomerNotificationsRouteImport
       parentRoute: typeof AuthenticatedCustomerRouteRoute
     }
-    '/_authenticated/customer/orders': {
-      id: '/_authenticated/customer/orders'
-      path: '/orders'
-      fullPath: '/customer/orders'
-      preLoaderRoute: typeof AuthenticatedCustomerOrdersRouteImport
-      parentRoute: typeof AuthenticatedCustomerRouteRoute
-    }
     '/_authenticated/customer/profile': {
       id: '/_authenticated/customer/profile'
       path: '/profile'
@@ -759,18 +752,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCustomerWishlistRouteImport
       parentRoute: typeof AuthenticatedCustomerRouteRoute
     }
+    '/_authenticated/customer/orders/': {
+      id: '/_authenticated/customer/orders/'
+      path: '/orders'
+      fullPath: '/customer/orders/'
+      preLoaderRoute: typeof AuthenticatedCustomerOrdersIndexRouteImport
+      parentRoute: typeof AuthenticatedCustomerRouteRoute
+    }
   }
 }
 
 interface AuthenticatedAdminRouteRouteChildren {
-  AuthenticatedAdminDashboardRoute: typeof AuthenticatedAdminDashboardRoute
+  AuthenticatedAdminOrdersRoute: typeof AuthenticatedAdminOrdersRoute
   AuthenticatedAdminProductsRoute: typeof AuthenticatedAdminProductsRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
 }
 
 const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren =
   {
-    AuthenticatedAdminDashboardRoute: AuthenticatedAdminDashboardRoute,
+    AuthenticatedAdminOrdersRoute: AuthenticatedAdminOrdersRoute,
     AuthenticatedAdminProductsRoute: AuthenticatedAdminProductsRoute,
     AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
   }
@@ -783,11 +783,11 @@ const AuthenticatedAdminRouteRouteWithChildren =
 interface AuthenticatedCustomerRouteRouteChildren {
   AuthenticatedCustomerAddressesRoute: typeof AuthenticatedCustomerAddressesRoute
   AuthenticatedCustomerNotificationsRoute: typeof AuthenticatedCustomerNotificationsRoute
-  AuthenticatedCustomerOrdersRoute: typeof AuthenticatedCustomerOrdersRoute
   AuthenticatedCustomerProfileRoute: typeof AuthenticatedCustomerProfileRoute
   AuthenticatedCustomerSettingsRoute: typeof AuthenticatedCustomerSettingsRoute
   AuthenticatedCustomerWishlistRoute: typeof AuthenticatedCustomerWishlistRoute
   AuthenticatedCustomerIndexRoute: typeof AuthenticatedCustomerIndexRoute
+  AuthenticatedCustomerOrdersIndexRoute: typeof AuthenticatedCustomerOrdersIndexRoute
 }
 
 const AuthenticatedCustomerRouteRouteChildren: AuthenticatedCustomerRouteRouteChildren =
@@ -795,11 +795,12 @@ const AuthenticatedCustomerRouteRouteChildren: AuthenticatedCustomerRouteRouteCh
     AuthenticatedCustomerAddressesRoute: AuthenticatedCustomerAddressesRoute,
     AuthenticatedCustomerNotificationsRoute:
       AuthenticatedCustomerNotificationsRoute,
-    AuthenticatedCustomerOrdersRoute: AuthenticatedCustomerOrdersRoute,
     AuthenticatedCustomerProfileRoute: AuthenticatedCustomerProfileRoute,
     AuthenticatedCustomerSettingsRoute: AuthenticatedCustomerSettingsRoute,
     AuthenticatedCustomerWishlistRoute: AuthenticatedCustomerWishlistRoute,
     AuthenticatedCustomerIndexRoute: AuthenticatedCustomerIndexRoute,
+    AuthenticatedCustomerOrdersIndexRoute:
+      AuthenticatedCustomerOrdersIndexRoute,
   }
 
 const AuthenticatedCustomerRouteRouteWithChildren =
