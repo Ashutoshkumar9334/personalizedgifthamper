@@ -23,9 +23,11 @@ export const checkAdminEmail = createServerFn({ method: "POST" })
 export const getMyRole = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    const { data } = await context.supabase.rpc("has_role", {
-      _user_id: context.userId,
-      _role: "admin",
-    });
+    const { data } = await context.supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", context.userId)
+      .eq("role", "admin")
+      .maybeSingle();
     return { role: data ? ("admin" as const) : ("customer" as const) };
   });
